@@ -1,0 +1,10 @@
+(echo node_modules/
+echo dist/
+echo build/
+echo coverage/
+echo .env
+echo .env.*
+echo .DS_Store
+echo Thumbs.db
+echo .vscode/
+echo .idea/) > .gitignore
