@@ -1,10 +1,20 @@
-(echo node_modules/
-echo dist/
-echo build/
-echo coverage/
-echo .env
-echo .env.*
-echo .DS_Store
-echo Thumbs.db
-echo .vscode/
-echo .idea/) > .gitignore
+# dependencies
+node_modules/
+
+# build outputs
+dist/
+build/
+coverage/
+
+# env files
+.env
+.env.*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDE folders
+.vscode/
+.idea/
+
