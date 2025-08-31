@@ -47,6 +47,8 @@ export const register = async (req, res) => {
             user: { id: newUser._id, name, email, role, phone_number }
         });
 
+        // console.log(res);
+
     } catch (error) {
         res.status(500).json({ msg: `Server error ${error.message}` })
     }
@@ -69,8 +71,10 @@ export const login = async (req, res) => {
         if (!user) return res.status(400).json({ msg: 'Invalid crediatials' });
 
         //compare password
-        const ismatch = bcrypt.compare(password, user.password_hash);
+        const ismatch = await bcrypt.compare(password, user.password_hash);
         if (!ismatch) return res.status(400).json({ msg: 'Invalid crediatials' });
+
+        // console.log(ismatch);
 
         user.last_login = new Date();
         await user.save();
@@ -109,4 +113,15 @@ export const login = async (req, res) => {
     } catch (error) {
         res.status(500).json({ msg: `Server error ${error.message}` });
     }
+}
+
+
+export const logout = (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "strict",   // prevent CSRF
+        secure: process.env.NODE_ENV === "production", // only https in prod
+    })
+
+    return res.status(200).json({ msg: "Logged out successfully" });
 }

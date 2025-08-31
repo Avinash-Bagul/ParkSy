@@ -4,6 +4,8 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import authMiddleware from './middlewares/authMiddleware.js';
+import roleMiddleware from './middlewares/roleMiddleware.js';
 
 dotenv.config({path: '../../.env'});
 connectDB();
@@ -18,6 +20,27 @@ app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }));
+
+app.get("/protected", authMiddleware, (req,res) => {
+  res.json({
+    msg: "Protected route access successfully",
+    user: req.user
+  })
+})
+
+app.get("/profile", authMiddleware, (req,res) => {
+  res.json({msg: `Hello ${req.user.role}`});  
+});
+
+
+app.post("/parkingSpot", authMiddleware, roleMiddleware("owner"), (req,res) => {
+  res.json({msg: "parking spot created"});
+})
+
+app.get("/users", authMiddleware, roleMiddleware("admin"), (req, res) => {
+  res.json({ msg: "All users list (admin only)" });
+});
+
 
 
 // Routes
