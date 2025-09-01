@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authMiddleware from './middlewares/authMiddleware.js';
 import roleMiddleware from './middlewares/roleMiddleware.js';
+import parkingRoutes from './routes/ParkingRoutes.js'
 
 dotenv.config({path: '../../.env'});
 connectDB();
@@ -33,9 +34,7 @@ app.get("/profile", authMiddleware, (req,res) => {
 });
 
 
-app.post("/parkingSpot", authMiddleware, roleMiddleware("owner"), (req,res) => {
-  res.json({msg: "parking spot created"});
-})
+
 
 app.get("/users", authMiddleware, roleMiddleware("admin"), (req, res) => {
   res.json({ msg: "All users list (admin only)" });
@@ -45,6 +44,8 @@ app.get("/users", authMiddleware, roleMiddleware("admin"), (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
+
+app.use("/api/parking", parkingRoutes);
 
 app.get('/', (req, res) => res.send('🌐 ParkSy Backend Running'));
 
