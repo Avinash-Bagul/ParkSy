@@ -7,6 +7,7 @@ import cors from 'cors';
 import authMiddleware from './middlewares/authMiddleware.js';
 import roleMiddleware from './middlewares/roleMiddleware.js';
 import parkingRoutes from './routes/ParkingRoutes.js'
+import BookingRoutes from './routes/BookingRoutes.js';
 
 dotenv.config({path: '../../.env'});
 connectDB();
@@ -46,6 +47,8 @@ app.get("/users", authMiddleware, roleMiddleware("admin"), (req, res) => {
 app.use('/api/auth', authRoutes);
 
 app.use("/api/parking", parkingRoutes);
+
+app.use('/api/booking', BookingRoutes);
 
 app.get('/', (req, res) => res.send('🌐 ParkSy Backend Running'));
 
