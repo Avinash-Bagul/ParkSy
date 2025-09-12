@@ -18,6 +18,8 @@ export const createParkingSpot = async (req, res) => {
             price_per_hour: req.body.price_per_hour,
             price_per_day: req.body.price_per_day,
             photo_url: req.body.photo_url,
+            available_from: req.body.available_from,
+            available_to: req.body.available_to
         });
 
         await newSpot.save();

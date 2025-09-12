@@ -13,10 +13,49 @@ const createBooking = async (req, res) => {
         const parkingSpot = await ParkingSpot.findById(parking_id);
         console.log(parkingSpot.is_available);
 
-        if (!parkingSpot ||!parkingSpot.is_available) {
-            console.log("afsjrjjrjj");
-           return res.status(404).json({ message: "Parking spot is not available" });
+        //checks if parking spot is available or not exits
+        if (!parkingSpot || !parkingSpot.is_available) {
+            return res.status(404).json({ message: "Parking spot is not available" });
         }
+
+        //checking the date is valid or not
+        const s = new Date(start_time), e = new Date(end_time);
+        if (isNaN(s.getTime()) || isNaN(e.getTime()) || e <= s) {
+            return res.status(400).json({ msg: "Invalid or bad time range" });
+        }
+
+        //checking owner parking spot availability with driver booking dates & time
+        if (s < parkingSpot.available_from || e > parkingSpot.available_to) {
+            return res.status(400).json({
+                msg: "Booking time is outside the parking spot's available hours"
+            });
+        }
+
+        const durationTime = (end_time - start_time) / 1000 * 60 * 60;
+        if (durationTime <= 1) {
+            return res.status(400).json({ msg: "Minimum booking duration is 1 hour" });
+        }
+
+        if (durationHours > 24) {
+            return res.status(400).json({ msg: "Maximum booking duration is 24 hours" });
+        }
+
+        //if the parking spot is currently book by another driver it will show already booked
+        const conflict = await Booking.findOne({
+            parking_id,
+            status: "confirmed",
+            $or: [
+                { start_time: { $lt: new Date(end_time) }, end_time: { $gt: new Date(start_time) } }
+            ]
+        });
+
+        // console.log(conflict);
+
+        if (conflict) {
+            return res.status(400).json({ msg: "This spot is already booked for the selected time" });
+        }
+
+
 
         const start = new Date(start_time);
         const end = new Date(end_time);

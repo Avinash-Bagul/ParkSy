@@ -38,8 +38,17 @@ const ParkingSpotSchema = mongoose.Schema(
             type: Boolean,
             default: true,
         },
+
         photo_url: {
             type: [String], // or [String] if multiple images
+        },
+        available_from: {
+            type: Date,
+            required: true
+        },
+        available_to: {
+            type: Date,
+            required: true
         },
     }, { timestamps: true }
 
