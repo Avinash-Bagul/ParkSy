@@ -8,6 +8,7 @@ import authMiddleware from './middlewares/authMiddleware.js';
 import roleMiddleware from './middlewares/roleMiddleware.js';
 import parkingRoutes from './routes/ParkingRoutes.js'
 import BookingRoutes from './routes/BookingRoutes.js';
+import AdminRoutes from './routes/AdminRoutes.js';
 
 dotenv.config({path: '../../.env'});
 connectDB();
@@ -35,20 +36,14 @@ app.get("/profile", authMiddleware, (req,res) => {
 });
 
 
-
-
-app.get("/users", authMiddleware, roleMiddleware("admin"), (req, res) => {
-  res.json({ msg: "All users list (admin only)" });
-});
-
-
-
 // Routes
 app.use('/api/auth', authRoutes);
 
-app.use("/api/parking", parkingRoutes);
+app.use("/api/parkingSpot", parkingRoutes);
 
 app.use('/api/booking', BookingRoutes);
+
+app.use('/api/admin', AdminRoutes);
 
 app.get('/', (req, res) => res.send('🌐 ParkSy Backend Running'));
 

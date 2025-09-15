@@ -11,7 +11,7 @@ const createBooking = async (req, res) => {
         const { parking_id, start_time, end_time } = req.body;
 
         const parkingSpot = await ParkingSpot.findById(parking_id);
-        console.log(parkingSpot.is_available);
+        // console.log(parkingSpot.is_available);
 
         //checks if parking spot is available or not exits
         if (!parkingSpot || !parkingSpot.is_available) {
@@ -36,7 +36,7 @@ const createBooking = async (req, res) => {
             return res.status(400).json({ msg: "Minimum booking duration is 1 hour" });
         }
 
-        if (durationHours > 24) {
+        if (durationTime > 24) {
             return res.status(400).json({ msg: "Maximum booking duration is 24 hours" });
         }
 
@@ -74,7 +74,7 @@ const createBooking = async (req, res) => {
 
         await booking.save();
 
-        res.status(201).json({ msg: 'Parking space created', booking });
+        res.status(201).json({ msg: 'Booking created', booking });
     } catch (error) {
         res.status(403).json({ message: `server error ${error}` });
     }
