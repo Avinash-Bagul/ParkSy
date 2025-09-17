@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const ParkingSpotSchema = mongoose.Schema(
+const SpacesSchema = mongoose.Schema(
     {
         owner_id: {
             type: mongoose.Schema.Types.ObjectId,
@@ -54,6 +54,6 @@ const ParkingSpotSchema = mongoose.Schema(
 
 );
 
-const ParkingSpot = mongoose.model('ParkingSpot', ParkingSpotSchema);
+const ParkingSpot = mongoose.model('SpacesModel', SpacesSchema);
 
-export default ParkingSpot
+export default ParkingSpot;

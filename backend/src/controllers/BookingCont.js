@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
-import ParkingSpot from "../models/ParkingSpot.js";
+import SpacesModel from "../models/SpacesModel.js";
 
-const createBooking = async (req, res) => {
+export const createBooking = async (req, res) => {
     try {
         if (req.user.role != "driver") {
             return res.status(401).json({ message: "Only drivers can book " });
@@ -10,7 +10,7 @@ const createBooking = async (req, res) => {
 
         const { parking_id, start_time, end_time } = req.body;
 
-        const parkingSpot = await ParkingSpot.findById(parking_id);
+        const parkingSpot = await SpacesModel.findById(parking_id);
         // console.log(parkingSpot.is_available);
 
         //checks if parking spot is available or not exits
@@ -80,4 +80,13 @@ const createBooking = async (req, res) => {
     }
 }
 
-export default createBooking;
+
+export const getBookingDetails = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const bookingData = await Booking.findById(id);
+
+    } catch (error) {
+        res.status(403).json({message: `server error ${error.message}`})
+    }
+}

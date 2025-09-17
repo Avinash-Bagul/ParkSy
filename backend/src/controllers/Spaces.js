@@ -1,14 +1,14 @@
-import ParkingSpot from "../models/ParkingSpot.js";
+import SpacesModel from "../models/SpacesModel.js";
 
 //creating parking spot
-export const createParkingSpot = async (req, res) => {
+export const createSpace = async (req, res) => {
     try {
 
         if (req.user.role !== "owner") {
             return res.status(403).json({ msg: "Only owners can create parking spots" });
         }
 
-        const newSpot = new ParkingSpot({
+        const newSpot = new SpacesModel({
             owner_id: req.user.id,  // ✅ take from token, not from body
             title: req.body.title,
             description: req.body.description,
@@ -31,7 +31,7 @@ export const createParkingSpot = async (req, res) => {
 }
 
 //getting parking spots
-export const getParkingSpot = async (req, res) => {
+export const getSpace = async (req, res) => {
     try {
         const spaces = await ParkingSpace.find({ is_available: true }).populate("user_id", "name email");
         res.json(spaces);
@@ -41,7 +41,7 @@ export const getParkingSpot = async (req, res) => {
 }
 
 //update the Parking spot
-export const updateParkingSpot = async (req, res) => {
+export const updateSpace = async (req, res) => {
     try {
         const updated = await ParkingSpace.findByIdAndUpdate(req.params.id, req.body, { new: true });
         res.json(updated);
@@ -51,9 +51,9 @@ export const updateParkingSpot = async (req, res) => {
 }
 
 //delete parking spot 
-export const deleteParkingSpot = async (req, res) => {
+export const deleteSpace = async (req, res) => {
     try {
-        const deleted = await ParkingSpot.findByIdAndDelete(req.params.id);
+        const deleted = await SpacesModel.findByIdAndDelete(req.params.id);
         res.json({ msg: 'parking spot deleted' });
 
     } catch (error) {

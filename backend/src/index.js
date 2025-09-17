@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authMiddleware from './middlewares/authMiddleware.js';
 import roleMiddleware from './middlewares/roleMiddleware.js';
-import parkingRoutes from './routes/ParkingRoutes.js'
+import SpacesRoutes from './routes/SpacesRoutes.js'
 import BookingRoutes from './routes/BookingRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
 
@@ -39,7 +39,7 @@ app.get("/profile", authMiddleware, (req,res) => {
 // Routes
 app.use('/api/auth', authRoutes);
 
-app.use("/api/parkingSpot", parkingRoutes);
+app.use("/api/spaces", SpacesRoutes);
 
 app.use('/api/booking', BookingRoutes);
 
@@ -50,4 +50,3 @@ app.get('/', (req, res) => res.send('🌐 ParkSy Backend Running'));
 app.listen(PORT, () => {
     console.log("Server is running at 5000");
 });
-

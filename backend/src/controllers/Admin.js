@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
-import ParkingSpot from "../models/ParkingSpot.js";
+import SpacesModel from "../models/SpacesModel.js";
 import Booking from "../models/Booking.js";
 
 export const getUsersDetails = async (req, res) => {
@@ -20,7 +20,7 @@ export const getUsersDetails = async (req, res) => {
 
 export const updateUserDetail = async (req, res) => {
     try {
-        const updatedUser = await User.findByIdAndUpdate(req.user.id, req.body, {new: true});
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true});
         res.json(updatedUser);
 
     } catch (error) {
@@ -29,3 +29,21 @@ export const updateUserDetail = async (req, res) => {
 }
 
 
+export const getSpaces = async (req, res) => {
+    try {
+        const allSpaces = await SpacesModel.find();
+        res.status(201).json({message: "spaces data fetched successfully", allSpaces});
+    } catch (error) {
+        res.status(403).json({message: `server error ${error.message}`});
+    }
+}
+
+export const updatedSpace = async (req, res) => {
+    try {
+        const updatedSpace = await SpacesModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        console.log(updatedSpace);
+        res.json(updatedSpace);
+    } catch (error) {
+        res.status(403).json({message: `server error ${error.message}`});
+    }
+}
