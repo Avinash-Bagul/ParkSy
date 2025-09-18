@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import User from "../models/User.js";
-import SpacesModel from "../models/SpacesModel.js";
+import Spaces from "../models/SpacesModel.js";
 import Booking from "../models/Booking.js";
 
 export const getUsersDetails = async (req, res) => {
@@ -31,8 +31,13 @@ export const updateUserDetail = async (req, res) => {
 
 export const getSpaces = async (req, res) => {
     try {
-        const allSpaces = await SpacesModel.find();
-        res.status(201).json({message: "spaces data fetched successfully", allSpaces});
+        const allSpaces = await Spaces.find();
+
+        if(!allSpaces || allSpaces.length === 0){
+            return res.status(404).json({message: "Spaces not found"});
+        }
+        
+       return res.status(201).json({message: "spaces data fetched successfully", allSpaces});
     } catch (error) {
         res.status(403).json({message: `server error ${error.message}`});
     }
@@ -40,7 +45,7 @@ export const getSpaces = async (req, res) => {
 
 export const updatedSpace = async (req, res) => {
     try {
-        const updatedSpace = await SpacesModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
+        const updatedSpace = await Spaces.findByIdAndUpdate(req.params.id, req.body, {new:true});
         console.log(updatedSpace);
         res.json(updatedSpace);
     } catch (error) {

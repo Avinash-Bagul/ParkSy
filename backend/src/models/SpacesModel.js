@@ -54,6 +54,6 @@ const SpacesSchema = mongoose.Schema(
 
 );
 
-const ParkingSpot = mongoose.model('SpacesModel', SpacesSchema);
+const Spaces = mongoose.model('Spaces', SpacesSchema);
 
-export default ParkingSpot;
+export default Spaces;

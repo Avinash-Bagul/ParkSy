@@ -4,9 +4,9 @@ import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
-router.post("/", authMiddleware, createSpace);       // Create new parking space
-router.get("/", getSpace);                       // Get all available spaces
-router.put("/:id", authMiddleware, updateSpace);     // Update space
-router.delete("/:id", authMiddleware, deleteSpace);  // Delete space
+router.get("/", getSpace);                       
+router.post("/create", authMiddleware, createSpace);       
+router.put("/update/:id", authMiddleware, updateSpace);     
+router.delete("/delete/:id", authMiddleware, deleteSpace);  
 
 export default router;

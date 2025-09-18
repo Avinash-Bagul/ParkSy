@@ -1,4 +1,4 @@
-import SpacesModel from "../models/SpacesModel.js";
+import Spaces from "../models/SpacesModel.js";
 
 //creating parking spot
 export const createSpace = async (req, res) => {
@@ -8,7 +8,7 @@ export const createSpace = async (req, res) => {
             return res.status(403).json({ msg: "Only owners can create parking spots" });
         }
 
-        const newSpot = new SpacesModel({
+        const newSpot = new Spaces({
             owner_id: req.user.id,  // ✅ take from token, not from body
             title: req.body.title,
             description: req.body.description,
@@ -33,7 +33,7 @@ export const createSpace = async (req, res) => {
 //getting parking spots
 export const getSpace = async (req, res) => {
     try {
-        const spaces = await ParkingSpace.find({ is_available: true }).populate("user_id", "name email");
+        const spaces = await Spaces.find({ is_available: true }).populate("owner_id", "name email");
         res.json(spaces);
     } catch (error) {
         res.status(500).json({ msg: error.message });
@@ -43,7 +43,16 @@ export const getSpace = async (req, res) => {
 //update the Parking spot
 export const updateSpace = async (req, res) => {
     try {
-        const updated = await ParkingSpace.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const SingleSpace = await Spaces.findById(req.params.id);
+        if (!SingleSpace) {
+            return res.status(404).json({ message: "parking space not found" });
+        }
+
+        if (String(req.user.id) !== String(SingleData.owner_id)) {
+            return res.status(403).json({ message: "You are not authorized to update this space" });
+        }
+
+        const updated = await Spaces.findByIdAndUpdate(req.params.id)
         res.json(updated);
     } catch (error) {
         res.status(400).json({ msg: error.message });
@@ -53,9 +62,20 @@ export const updateSpace = async (req, res) => {
 //delete parking spot 
 export const deleteSpace = async (req, res) => {
     try {
-        const deleted = await SpacesModel.findByIdAndDelete(req.params.id);
-        res.json({ msg: 'parking spot deleted' });
 
+        const SingleData = await Spaces.findById(req.params.id);
+
+        if (!SingleData) {
+            return res.status(404).json({ message: "parking space not found" });
+        }
+
+        if (String(req.user.id) !== String(SingleData.owner_id)) {
+            return res.status(403).json({ message: "You are not authorized to delete this space" });
+        }
+
+        await Spaces.findByIdAndDelete(req.params.id);
+
+        res.status(201).json({ message: "Space deleted successfully" });
     } catch (error) {
         res.status(500).json({ msg: error.message });
     }
