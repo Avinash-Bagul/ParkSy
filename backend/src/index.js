@@ -38,11 +38,8 @@ app.get("/profile", authMiddleware, (req,res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-
 app.use("/api/spaces", SpacesRoutes);
-
 app.use('/api/booking', BookingRoutes);
-
 app.use('/api/admin', AdminRoutes);
 
 app.get('/', (req, res) => res.send('🌐 ParkSy Backend Running'));

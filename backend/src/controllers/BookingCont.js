@@ -8,10 +8,10 @@ export const createBooking = async (req, res) => {
             return res.status(401).json({ message: "Only drivers can book " });
         }
 
-        const { parking_id, start_time, end_time } = req.body;
+        const { booking_id, start_time, end_time } = req.body;
 
-        const parkingSpot = await SpacesModel.findById(parking_id);
-        // console.log(parkingSpot.is_available);
+        const parkingSpot = await SpacesModel.findById(booking_id);
+        // console.log(parkingSpot);
 
         //checks if parking spot is available or not exits
         if (!parkingSpot || !parkingSpot.is_available) {
@@ -42,7 +42,7 @@ export const createBooking = async (req, res) => {
 
         //if the parking spot is currently book by another driver it will show already booked
         const conflict = await Booking.findOne({
-            parking_id,
+            booking_id,
             status: "confirmed",
             $or: [
                 { start_time: { $lt: new Date(end_time) }, end_time: { $gt: new Date(start_time) } }
@@ -65,7 +65,7 @@ export const createBooking = async (req, res) => {
 
         const booking = new Booking({
             driver_id: req.user.id,
-            parking_id,
+            booking_id,
             start_time,
             end_time,
             total_price,
@@ -86,7 +86,32 @@ export const getBookingDetails = async (req, res) => {
         const id = req.params.id;
         const bookingData = await Booking.findById(id);
 
+        res.status(201).json({ message: "successfully fetched booking detail ", bookingData })
+
     } catch (error) {
-        res.status(403).json({message: `server error ${error.message}`})
+        res.status(403).json({ message: `server error ${error.message}` })
+    }
+}
+
+export const payment = async (req, res) => {
+    try {
+        const bookingData = await Booking.findById(req.params.id);
+
+        if (!bookingData) {
+            return res.status(404).json({ msg: "booking not found" });
+        }
+
+        if (req.user.role !== "driver" || bookingData.driver_id.toString() !== req.user.id) {
+            return res.status(403).json({ msg: "Not authorised" });
+        }
+
+        bookingData.payment_status = "waiting_for_confirmation";
+        bookingData.save();
+        res.status(201).json({
+            message: "waiting for confirmation",
+        })
+
+    } catch (error) {
+        return res.status(500).json({ msg: `server error ${error.message}` });
     }
 }
