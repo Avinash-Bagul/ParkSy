@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { UserBasedButton } from "./HowItWorks.styles";
+import { Hiw, UserBasedButton } from "./HowItWorks.styles";
 import StepsHIW from "./StepsHIW";
 
 const HowItWorks = () => {
@@ -8,7 +8,7 @@ const HowItWorks = () => {
     console.log(activeBtn);
     return (
         <>
-            <div className="h-100vh d-flex flex-column justify-content-around align-items-center my-5" >
+            <Hiw className="h-100vh d-flex flex-column justify-content-around align-items-center my-5 py-5" >
                 <div className="container d-flex flex-column justify-content-center align-items-center">
                     <div className="Herohead container">
                         <div className="head d-flex flex-column justify-content-center align-items-center fw-bold">
@@ -16,14 +16,14 @@ const HowItWorks = () => {
                             <p>Simple, fast, and secure for both drivers and space owners</p>
                         </div>
                     </div>
-                    <UserBasedButton className="d-flex justify-content-evenly align-items-center mt-3" $active={activeBtn}>
+                    <UserBasedButton className="d-flex justify-content-evenly align-items-center mt-5 mb-3" $active={activeBtn}>
                         <button className="driverbtn herobtn btn text-black bg-light w-50" onClick={() => setActiveBtn("driver")}>For Driver</button>
                         <button className="ownerbtn tealbtn btn text-black bg-light w-50" onClick={() => setActiveBtn("owner")}>For Space Owner</button>
                     </UserBasedButton>
 
                     <StepsHIW/>
                 </div>
-            </div>
+            </Hiw>
         </>
     )
 }

@@ -4,7 +4,7 @@ export const theme = {
     teal: "#019AAB",
     tealCardColor: "#019AAB",
     background: "#F5F5F5",
-    lightGray: "#D9D9D9",
+    lightGray: "#f5f5f7",
     white: "#FFFF",
   },
   spacing: (factor) => `${factor * 8}px`,

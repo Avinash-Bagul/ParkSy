@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+export const Hiw  = styled.header`
+  background-color: ${(props) => props.theme.colors.lightGra};
+`
+
 export const UserBasedButton = styled.header`
   text-align: center;
   width: 400px;

@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./Home.styles.jsx";
+import heroimg from '../../../assets/apple-touch-icon.png'
 const Hero = () => {
     return (
         <>
@@ -8,7 +9,7 @@ const Hero = () => {
 
                 <div className="container-fluid ">
                     <div className="heroImg" style={{ height: "300px" }}>
-                        <img src="" alt="Image" className="heroimg" />
+                        <img src={heroimg} alt="Image" className="heroimg" />
                     </div>
                 </div>
                 <div className="container">
