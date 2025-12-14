@@ -6,6 +6,7 @@ export const theme = {
     background: "#F5F5F5",
     lightGray: "#f5f5f7",
     white: "#FFFF",
+    golden: "#f2a705ff",
   },
   spacing: (factor) => `${factor * 8}px`,
 
