@@ -1,6 +1,7 @@
 export const theme = {
   colors: {
     orange: "#FF5E00",
+    light_orange: "#dbdbe7",
     teal: "#019AAB",
     tealCardColor: "#019AAB",
     background: "#F5F5F5",

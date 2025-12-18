@@ -1,12 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import heroimg from '../../../assets/apple-touch-icon.png'
+import heroimg from '../../../assets/heroimg.png'
 import styled from "styled-components";
 
 const Button = styled.header`
     text-align: center;
     color: ${(props) => props.theme.colors.buttonTextColor};
 
+    .heroimg{
+        width: 100%;
+        height: 100%;
+       background-image: url(${heroimg});
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
     .orangebtn{
     background-color: ${(props) => props.theme.colors.orange};
     border-radius: 50px;
@@ -31,9 +39,12 @@ const Hero = () => {
         <>
             <div className="h-100vh d-flex flex-column justify-content-around align-items-center" style={{ height: "90vh" }}>
 
-                <div className="container-fluid ">
+                <div className="container-fluid">
                     <div className="heroImg" style={{ height: "300px" }}>
-                        <img src={heroimg} alt="Image" className="heroimg" />
+                        {/* <img src={heroimg} alt="Image" className="heroimg" /> */}
+                        <div className="heroimg">
+
+                        </div>
                     </div>
                 </div>
                 <div className="container">
