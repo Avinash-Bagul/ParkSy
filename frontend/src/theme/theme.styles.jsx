@@ -8,6 +8,7 @@ export const theme = {
     lightGray: "#f5f5f7",
     white: "#FFFF",
     golden: "#f2a705ff",
+    gradiant: "linear-gradient(135deg, #8B2FC9, #3C0663)"
   },
   spacing: (factor) => `${factor * 8}px`,
 

@@ -13,9 +13,8 @@ function App() {
         <Route exact path='/' element={<Home/>} />
         <Route exact path='/signUp' element />
         <Route exact path='/login' element={<Login/> }/>
-        
       </Routes>
-      <h1>app is properly running</h1>
+      
     </>
   );
 }

@@ -17,7 +17,7 @@ function App() {
         <Route path="/login" element={<Login />} />
       </Routes>
 
-      <h1>app is properly running</h1>
+      <h1>app is running</h1>
     </>
   );
 }
