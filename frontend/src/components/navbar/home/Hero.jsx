@@ -37,14 +37,19 @@ const Button = styled.header`
 const Hero = () => {
     return (
         <>
-            <div className="h-100vh d-flex flex-column justify-content-around align-items-center" style={{ height: "90vh" }}>
-
-                <div className="container-fluid">
-                    <div className="heroImg" style={{ height: "300px" }}>
-                        {/* <img src={heroimg} alt="Image" className="heroimg" /> */}
-                        <div className="heroimg">
-
-                        </div>
+            <div className="h-100vh d-flex flex-column justify-content-between align-items-center" style={{ height: "90vh" }}>
+                <div className="container-fluid p-0">
+                    <div
+                        className="heroImg"
+                        style={{
+                            height: "450px",
+                            backgroundImage: `url(${heroimg})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
+                        }}
+                    >
+                        {/* content here */}
                     </div>
                 </div>
                 <div className="container">

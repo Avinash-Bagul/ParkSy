@@ -4,6 +4,7 @@ import HowItWorks from "../../components/navbar/home/HowItWorks";
 import Feature from "../../components/navbar/home/Features";
 import Why from "../../components/navbar/home/Why";
 import Testimonials from "../../components/navbar/home/Testimonials";
+import FAQ from "../../components/navbar/home/FAQ";
 
 const Home = () => {
     return (
@@ -12,7 +13,8 @@ const Home = () => {
             <HowItWorks/> 
             <Feature/>
             <Why/>    
-            <Testimonials/>     
+            <Testimonials/> 
+            <FAQ/>    
         </>
     )
 }
