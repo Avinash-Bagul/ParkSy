@@ -1,20 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-const Whystyle = styled.section`
-  background-color: ${(props) => props.theme.colors.lightGray};
-  .history{
-    background: ${(props) => props.theme.colors.gradiant};
-     border-radius: 14px;
-  padding: 30px 20px;
-  color: white;
-  }
-  p{
-    margin: 0;
-    padding: 0;
-  }
-`
-
 export const WhyCard = styled.div`
   position: relative;
   height: 100%;
@@ -69,10 +55,63 @@ export const WhyCard = styled.div`
 
 `;
 
+const Whystyle = styled.section`
+  background-color: ${(props) => props.theme.colors.lightGray};
+
+  .history {
+    background: ${(props) => props.theme.colors.gradiant};
+    border-radius: 14px;
+    padding: 30px 20px;
+    color: white;
+    gap: 20px;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  /* Tablet */
+  @media (max-width: 992px) {
+    h1 {
+      font-size: 2rem;
+    }
+
+    .history {
+      flex-wrap: wrap;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .H-box {
+      width: 50%;
+      padding: 15px 0;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 576px) {
+    h1 {
+      font-size: 1.75rem;
+      text-align: center;
+    }
+
+    .history {
+      flex-direction: column;
+    }
+
+    .H-box {
+      width: 100%;
+    }
+  }
+`;
 
 
 
-// whyData.js
 export const whyCards = [
     {
         title: "Save Money",
@@ -152,7 +191,8 @@ const Why = () => {
 
                     </div>
 
-                    <div className="history w-100 d-flex justify-content-between align-items-center my-5">
+                    <div className="history w-100 d-flex justify-content-between align-items-center my-5 flex-wrap">
+
                         <div className="H-box text-center px-5 d-flex flex-column justify-content-evenly align-items-center">
                             <h3>$800</h3>
                             <p>Avg. saved per Year</p>

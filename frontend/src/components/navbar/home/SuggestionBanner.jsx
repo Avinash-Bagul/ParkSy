@@ -1,53 +1,73 @@
 import React from "react";
 import styled from "styled-components";
 
-const Sugg = styled.header`
-    height: 150px;
-    width: 100%;
-    background-color: ${(props) => props.theme.colors.lightGray};
-    border-radius: 10px;
-`
+const Sugg = styled.section`
+  min-height: 150px;
+  width: 100%;
+  background-color: ${(props) => props.theme.colors.lightGray};
+  border-radius: 10px;
+  padding: 1.5rem;
 
-const Button = styled.header`
+  @media (max-width: 768px) {
+    min-height: auto;
     text-align: center;
-    color: ${(props) => props.theme.colors.buttonTextColor};
+    padding: 1.5rem 1rem;
+  }
 
-    .orangebtn{
-    background-color: ${(props) => props.theme.colors.orange};
-    border-radius: 50px;
-     width: 150px;
-    height: 50px;
-    margin: 0 1rem;
-    }
+  @media (max-width: 576px) {
+  padding: 20px;
+  text-align: center;
 
-    .tealbtn{
-        background-color: ${(props) => props.theme.colors.teal};
-         border-radius: 50px;
-         width: 150px;
-         height: 50px;
-    }
+  h3 {
+    font-size: 1.4rem;
+  }
 
-    .orangebtn:hover, .tealbtn:active{
-        color: ${(props) => props.theme.colors.white};
-    }
+  p {
+    font-size: 0.9rem;
+  }
+}
+
 `;
 
+const ButtonWrapper = styled.div`
+  text-align: center;
+
+  .orangebtn {
+    background-color: ${(props) => props.theme.colors.orange};
+    border-radius: 50px;
+    width: 150px;
+    height: 50px;
+  }
+
+  @media (max-width: 768px) {
+    .orangebtn {
+      width: 100%;
+      max-width: 260px;
+      margin-top: 1rem;
+    }
+  }
+`;
+
+
 const SuggestionBanner = ({ title, subtitle, buttonText }) => {
-    return (
-        <Sugg className="sugg mt-5 px-5 mx-auto d-flex justify-content-between align-items-center">
-            <div className="suggestion-text d-flex flex-column justify-content-center">
-                <h5>{title}</h5>
-                <p>{subtitle}</p>
-            </div>
+  return (
+    <Sugg className="mt-5 mx-auto align-content-center">
+      <div className="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
 
-            <Button>
-                <button className="orangebtn herobtn btn text-light">
+        <div className="suggestion-text">
+          <h5 className="fw-bold">{title}</h5>
+          <p className="mb-0">{subtitle}</p>
+        </div>
 
-                    {buttonText}
-                </button>
-            </Button>
-        </Sugg>
-    );
+        <ButtonWrapper>
+          <button className="orangebtn btn text-light">
+            {buttonText}
+          </button>
+        </ButtonWrapper>
+
+      </div>
+    </Sugg>
+  );
 };
 
 export default SuggestionBanner;

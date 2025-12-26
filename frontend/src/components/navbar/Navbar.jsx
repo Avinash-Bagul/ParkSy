@@ -1,58 +1,120 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import favicon from "../../assets/favicon.ico"
 import styled from "styled-components";
+import favicon from "../../assets/favicon.ico";
 
-export const NavbarContainer = styled.header`
+const NavWrapper = styled.header`
+  background: ${(props) => props.theme.colors.primary};
+  padding: 12px 0;
+`;
+
+const LogoBox = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: ${(props) => props.theme.spacing(2)};
-  background-color: ${(props) => props.theme.colors.primary};
-  color: white;
-`;
+  align-items: center;
+  gap: 10px;
 
-export const Logo = styled.h1`
-  font-size: 1.5rem;
-`;
+  img {
+    width: 32px;
+  }
 
-export const NavLink = styled.a`
-  margin-left: ${(props) => props.theme.spacing(2)};
-  color: white;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
+  a {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: white;
+    text-decoration: none;
   }
 `;
 
+const NavLinks = styled.ul`
+  list-style: none;
+  gap: 30px;
+
+  li a {
+    /* color: white; */
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      color: ${(props) => props.theme.colors.orange};
+    }
+  }
+`;
+
+const MobileMenu = styled.div`
+  background: ${(props) => props.theme.colors.primary};
+  padding: 20px;
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      margin-bottom: 15px;
+
+      a {
+        color: white;
+        text-decoration: none;
+        font-size: 1.1rem;
+      }
+    }
+  }
+`;
+
+const Hamburger = styled.div`
+  font-size: 1.8rem;
+  color: white;
+  cursor: pointer;
+`;
 
 const Navbar = () => {
-    return (
-        <>
+  const [open, setOpen] = useState(false);
 
-            <div className="container">
-                <nav className="navbar w-100">
-                    <div className="row w-100 justify-content-between">
-                        <div className="col-6">
-                            <div>
-                                <img src={favicon} alt="" />
-                                <Link to="/">ParkSy</Link>
-                            </div>
-
-                        </div>
-                        <div className="col-5">
-                            <ul className="d-flex justify-content-between align-items-center">
-                                <li><Link to="/">Home</Link></li>
-                                <li><Link to="/how-it-works">How It Works</Link></li>
-                                <li><Link to="/host">Become a Host</Link></li>
-                                <li><Link to="/login">Login</Link></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+  return (
+    <>
+      <NavWrapper>
+        <div className="container">
+          <div className="row align-items-center justify-content-between">
+            {/* Logo */}
+            <div className="col-6 col-md-3">
+              <LogoBox>
+                <img src={favicon} alt="logo" />
+                <Link to="/">ParkSy</Link>
+              </LogoBox>
             </div>
-        </>
-    )
-}
+
+            {/* Desktop Menu */}
+            <div className="col-md-7 d-none d-md-flex justify-content-end">
+              <NavLinks className="d-flex align-items-center m-0">
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="#Hiw">How It Works</Link></li>
+                <li><Link to="/host">Become a Host</Link></li>
+                <li><Link to="/login">Login</Link></li>
+              </NavLinks>
+            </div>
+
+            {/* Mobile Hamburger */}
+            <div className="col-6 d-md-none text-end">
+              <Hamburger onClick={() => setOpen(!open)}>
+                ☰
+              </Hamburger>
+            </div>
+          </div>
+        </div>
+      </NavWrapper>
+
+      {/* Mobile Menu */}
+      {open && (
+        <MobileMenu className="d-md-none">
+          <ul>
+            <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
+            <li><Link to="#Hiw" onClick={() => setOpen(false)}>How It Works</Link></li>
+            <li><Link to="/host" onClick={() => setOpen(false)}>Become a Host</Link></li>
+            <li><Link to="/login" onClick={() => setOpen(false)}>Login</Link></li>
+          </ul>
+        </MobileMenu>
+      )}
+    </>
+  );
+};
 
 export default Navbar;

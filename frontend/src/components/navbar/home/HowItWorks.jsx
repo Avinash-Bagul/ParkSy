@@ -5,18 +5,96 @@ import StepsGrid from "./StepGrid";
 import styled from "styled-components";
 import SuggestionBanner from "./SuggestionBanner";
 
+// const Hiw = styled.header`
+//   background-color: ${(props) => props.theme.colors.lightGra};
+// `
+
 const Hiw = styled.header`
   background-color: ${(props) => props.theme.colors.lightGra};
-`
+  padding: 70px 0;
+
+  h1 {
+    font-size: 2.6rem;
+    text-align: center;
+  }
+
+  p {
+    text-align: center;
+    max-width: 720px;
+    margin: 10px auto 0;
+    font-size: 1rem;
+  }
+
+  /* Tablets */
+  @media (max-width: 768px) {
+    padding: 50px 0;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: 35px 0;
+
+    h1 {
+      font-size: 1.7rem;
+    }
+
+    p {
+      font-size: 0.9rem;
+      padding: 0 12px;
+    }
+  }
+`;
+
+
+// const UserBasedButton = styled.header`
+//   text-align: center;
+//   width: 100%;
+//   max-width: 400px;
+//   height: 50px;
+//   border-radius: 50px;
+//   display: flex;
+//   overflow: hidden;
+
+//   .driverbtn,
+//   .ownerbtn {
+//     flex: 1;
+//     border-radius: 50px;
+//     height: 90%;
+//     cursor: pointer;
+//     transition: 0.3s;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin: 5px;
+//     font-size: 14px;
+//   }
+
+//   @media (max-width: 576px) {
+//     height: 45px;
+
+//     .driverbtn,
+//     .ownerbtn {
+//       font-size: 13px;
+//       margin: 4px;
+//     }
+//   }
+// `;
 
 const UserBasedButton = styled.header`
-  text-align: center;
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   height: 50px;
   border-radius: 50px;
   display: flex;
   overflow: hidden;
-  /* background-color: ${(props) => props.theme.colors.lightGray}; */
 
   .driverbtn,
   .ownerbtn {
@@ -29,29 +107,22 @@ const UserBasedButton = styled.header`
     align-items: center;
     justify-content: center;
     margin: 5px;
+    font-size: 14px;
+    white-space: nowrap;
   }
 
-  /* Driver active */
-  .driverbtn {
-    background-color: ${(props) =>
-        props.$active === "driver"
-            ? props.theme.colors.white
-            : props.theme.colors.lightGray};
-        
-  }
+  /* Small phones */
+  @media (max-width: 480px) {
+    height: 44px;
 
-  /* Owner active */
-  .ownerbtn {
-    background-color: ${(props) =>
-        props.$active === "owner"
-            ? props.theme.colors.lightGray
-            : props.theme.colors.white};
-  }
-  .text-white{
-    color: ${(props) => props.theme.colors.white};
+    .driverbtn,
+    .ownerbtn {
+      font-size: 13px;
+      margin: 4px;
+      padding: 0 8px;
+    }
   }
 `;
-
 
 const HowItWorks = () => {
     const [mode, setMode] = useState("driver");
@@ -113,7 +184,7 @@ const HowItWorks = () => {
             emptyAfter: true
         },
         {
-             icon: "shield-checkmark-outline",
+            icon: "shield-checkmark-outline",
             title: "Get Verified",
             description: "Quick verification process to ensure safety and quality.",
             emptyAfter: true
@@ -144,7 +215,8 @@ const HowItWorks = () => {
     // console.log(activeBtn);
     return (
         <>
-            <Hiw className="h-100vh d-flex flex-column justify-content-around align-items-center my-5 py-5" >
+            <Hiw className="d-flex flex-column justify-content-around align-items-center my-3 py-4" id="Hiw">
+
                 <div className="container d-flex flex-column justify-content-center align-items-center">
                     <div className="Herohead container">
                         <div className="head d-flex flex-column justify-content-center align-items-center fw-bold">

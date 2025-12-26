@@ -85,7 +85,7 @@ const FAQ = () => {
 
     return (
         <>
-            <Faq className=" d-flex flex-column justify-content-around align-items-center my-5 py-5" >
+            <Faq className=" d-flex flex-column justify-content-around align-items-center mt-5 py-5" >
                 <div className="container d-flex flex-column justify-content-center align-items-center my-5">
                     <div className="Herohead container mb-5">
                         <div className="head d-flex flex-column justify-content-center align-items-center fw-bold">
@@ -93,11 +93,6 @@ const FAQ = () => {
                             <p>Got questions? We've got answers</p>
                         </div>
                     </div>
-
-
-
-
-
 
                     <FAQWrapper>
                         <div className="container">
