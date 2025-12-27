@@ -64,9 +64,19 @@ const faqData = [
             "ParkSy connects parking space owners with drivers looking for parking. Owners list their available spaces with pricing and availability. Drivers search for parking near their destination, book a spot, and pay through the app. Everything happens in real-time for instant connections.",
     },
     {
-        question: "How do I book a parking spot?",
+        question: "Can I list any type of parking spaces?",
         answer:
-            "Search your destination, select an available spot, reserve it instantly, and pay securely through the app.",
+            "Yes! You can list driveways, garages, parking lots, street parking spots, or any legal parking space you own or control. We support hourly, daily, weekly, and monthly rentals.",
+    },
+        {
+            question: "How do I book a parking spot?",
+            answer:
+                "Search your destination, select an available spot, reserve it instantly, and pay securely through the app.",
+        },
+    {
+        question: "What if I need to cancel my booking?",
+        answer:
+            "Drivers can cancel bookings up to 2 hours before the start time for a full refund. Cancellations within 2 hours are subject to a 50% cancellation fee. Space owners can manage their availability calendar at any time.",
     },
     {
         question: "Is payment secure?",
