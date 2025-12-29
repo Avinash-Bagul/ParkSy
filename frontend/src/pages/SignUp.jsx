@@ -105,12 +105,11 @@ const Login = () => {
                         <LeftContent>
                             <Badge>• Join thousands of users</Badge>
                             <h1 className="mt-4">
-                                Welcome Back <br />
+                               Start Your Journey <br />
                                 <span>to ParkSy</span>
                             </h1>
                             <p className="mt-3">
-                                Sign in to access your account and manage your parking
-                                spaces or bookings.
+                                Create an account to start finding parking instantly or earning from your space.
                             </p>
                         </LeftContent>
                     </div>
@@ -134,6 +133,15 @@ const Login = () => {
 
                             <div className="text-center text-muted mb-3">
                                 or continue with email
+                            </div>
+
+                            <div className="mb-3">
+                                <label>Full Name</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Your Name"
+                                />
                             </div>
 
                             <div className="mb-3">
@@ -162,20 +170,13 @@ const Login = () => {
                                 />
                             </div>
 
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <div className="d-flex justify-content-center align-items-center">
-                                    <input type="checkbox" className="me-2" />
-                                    Remember me
-                                </div>
-                                <Link to="/forgot-password">Forgot password?</Link>
-                            </div>
 
                             <PrimaryBtn className="w-100 mb-3">
-                                Sign In
+                                Create Account
                             </PrimaryBtn>
 
                             <p className="text-center mb-0">
-                                Don’t have an account? <Link to="/signup">Sign Up</Link>
+                                Already have an account? <Link to="/login">Login</Link>
                             </p>
 
                         </LoginCard>

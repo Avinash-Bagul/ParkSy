@@ -4,8 +4,10 @@ import styled from "styled-components";
 import favicon from "../../assets/favicon.ico";
 
 const NavWrapper = styled.header`
-  background: ${(props) => props.theme.colors.primary};
+  /* background: ${(props) => props.theme.colors.navyBlue}; */
+  background: transparent;
   padding: 12px 0;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.18);
 `;
 
 const LogoBox = styled.div`
@@ -20,7 +22,7 @@ const LogoBox = styled.div`
   a {
     font-size: 1.4rem;
     font-weight: 600;
-    color: white;
+    color: ${(props) => props.theme.colors.navyBlue};;
     text-decoration: none;
   }
 `;

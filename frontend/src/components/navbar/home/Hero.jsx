@@ -10,7 +10,7 @@ export const HeroWrapper = styled.section`
 
 export const HeroImage = styled.div`
   width: 100%;
-  height: 55vh;
+  height: 60vh;
   background-image: url(${heroimg});
   background-size: cover;
   background-position: center;

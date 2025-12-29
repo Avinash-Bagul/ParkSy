@@ -3,6 +3,7 @@ export const theme = {
     orange: "#FF5E00",
     light_orange: "#dbdbe7",
     teal: "#019AAB",
+    navyBlue: "#3C0663",
     tealCardColor: "#019AAB",
     background: "#F5F5F5",
     lightGray: "#f5f5f7",
