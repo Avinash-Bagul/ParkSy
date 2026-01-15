@@ -1,7 +1,11 @@
-import React from "react";
+import React, { use, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-// import { FaGoogle, FaApple, div } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import signUpSchema from "../features/auth/validation/signUpSchema";
+import axios from "axios";
+
+const API = import.meta.env.VITE_API;
 
 const LoginWrapper = styled.section`
   min-height: 90vh;
@@ -94,98 +98,143 @@ const PrimaryBtn = styled.button`
   }
 `;
 
-const Login = () => {
-    return (
-        <LoginWrapper>
-            <div className="container">
-                <div className="row align-items-center gy-5">
+const signUpValues = {
+  name: "",
+  email: "",
+  phone_number: "",
+  password: "",
+}
 
-                    {/* LEFT */}
-                    <div className="col-lg-6 d-flex justify-content-center">
-                        <LeftContent>
-                            <Badge>• Join thousands of users</Badge>
-                            <h1 className="mt-4">
-                               Start Your Journey <br />
-                                <span>to ParkSy</span>
-                            </h1>
-                            <p className="mt-3">
-                                Create an account to start finding parking instantly or earning from your space.
-                            </p>
-                        </LeftContent>
-                    </div>
+const SignUp = () => {
+  const navigate = useNavigate();
+  const { values, errors, handleSubmit, handleChange } = useFormik({
 
-                    {/* RIGHT */}
-                    <div className="col-lg-6 d-flex justify-content-center">
-                        <LoginCard className="w-100" style={{ maxWidth: "420px" }}>
+    initialValues: signUpValues,
+    validationSchema: signUpSchema,
+    onSubmit: async (values) => {
+      console.log(values);
 
-                            <div className="text-center mb-4">
-                                <h4>ParkSy</h4>
-                            </div>
+      try {
+        const res = await axios.post(`${API}/api/auth/register`,values);
+        console.log(res);
+        navigate('/')
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
-                            <div className="d-flex gap-3 mb-3">
-                                <button className="social-btn w-50 d-flex justify-content-center align-items-center">
-                                    <ion-icon name="logo-google" className="me-2 fs-4"></ion-icon>
-                                </button>
-                                <button className="social-btn w-50">
-                                    <ion-icon name="logo-apple" className="me-2 fs-4"></ion-icon>
-                                </button>
-                            </div>
-
-                            <div className="text-center text-muted mb-3">
-                                or continue with email
-                            </div>
-
-                            <div className="mb-3">
-                                <label>Full Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder="Your Name"
-                                />
-                            </div>
-
-                            <div className="mb-3">
-                                <label>Email Address</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Email"
-                                />
-                            </div>
-
-                            <div className="mb-3 position-relative">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="Password"
-                                />
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        right: "15px",
-                                        top: "45px",
-                                        color: "#9ca3af",
-                                    }}
-                                />
-                            </div>
+  })
 
 
-                            <PrimaryBtn className="w-100 mb-3">
-                                Create Account
-                            </PrimaryBtn>
+  return (
+    <LoginWrapper>
+      <div className="container">
+        <div className="row align-items-center gy-5">
 
-                            <p className="text-center mb-0">
-                                Already have an account? <Link to="/login">Login</Link>
-                            </p>
+          {/* LEFT */}
+          <div className="col-lg-6 d-flex justify-content-center">
+            <LeftContent>
+              <Badge>• Join thousands of users</Badge>
+              <h1 className="mt-4">
+                Start Your Journey <br />
+                <span>to ParkSy</span>
+              </h1>
+              <p className="mt-3">
+                Create an account to start finding parking instantly or earning from your space.
+              </p>
+            </LeftContent>
+          </div>
 
-                        </LoginCard>
-                    </div>
+          {/* RIGHT */}
+          <form className="col-lg-6 d-flex justify-content-center" onSubmit={handleSubmit}>
+            <LoginCard className="w-100" style={{ maxWidth: "420px" }}>
 
-                </div>
-            </div>
-        </LoginWrapper>
-    );
+              <div className="text-center mb-4">
+                <h4>ParkSy</h4>
+              </div>
+
+
+              <div className="mb-3">
+                <label>Full Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Your Name"
+                  id="name"
+                  name="name"
+                  value={values.fname}
+                  onChange={handleChange}
+                />
+              </div>
+              <p>{errors.name}</p>
+
+
+              <div className="mb-3">
+                <label>Phone Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Phone No"
+                  id="phone_number"
+                  name="phone_number"
+                  value={values.phone_number}
+                  onChange={handleChange}
+                />
+              </div>
+              <p>{errors.phone_number}</p>
+
+              <div className="mb-3">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  id="email"
+                  name="email"
+                  value={values.email}
+                  onChange={handleChange}
+                />
+              </div>
+              <p>{errors.email}</p>
+
+              <div className="mb-3 position-relative">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                  value={values.password}
+                  onChange={handleChange}
+                />
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "15px",
+                    top: "45px",
+                    color: "#9ca3af",
+                  }}
+                />
+              </div>
+              <p>{errors.password}</p>
+
+
+              <PrimaryBtn className="w-100 mb-3" type="submit">
+                Create Account
+              </PrimaryBtn>
+
+              <p className="text-center mb-0">
+                Already have an account? <Link to="/login">Login</Link>
+              </p>
+
+            </LoginCard>
+          </form>
+
+        </div>
+      </div>
+    </LoginWrapper>
+  );
 };
 
-export default Login;
+export default SignUp;

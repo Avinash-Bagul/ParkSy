@@ -1,10 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-// import { FaGoogle, FaApple, div } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from 'formik';
+import loginSchema from "../features/auth/validation/LoginSchema";
+import axios from 'axios';
+
+const API = import.meta.env.VITE_API;
 
 const LoginWrapper = styled.section`
-  min-height: 90vh;
+  min-height: 93vh;
   /* background: linear-gradient(135deg, #f8fbff, #eef3ff); */
   display: flex;
   align-items: center;
@@ -94,97 +98,138 @@ const PrimaryBtn = styled.button`
   }
 `;
 
+
+const loginValues = {
+  email: "",
+  password: ""
+}
+
 const Login = () => {
-    return (
-        <LoginWrapper>
-            <div className="container">
-                <div className="row align-items-center gy-5">
 
-                    {/* LEFT */}
-                    <div className="col-lg-6 d-flex justify-content-center">
-                        <LeftContent>
-                            <Badge>• Join thousands of users</Badge>
-                            <h1 className="mt-4">
-                                Welcome Back <br />
-                                <span>to ParkSy</span>
-                            </h1>
-                            <p className="mt-3">
-                                Sign in to access your account and manage your parking
-                                spaces or bookings.
-                            </p>
-                        </LeftContent>
-                    </div>
+  const navigate = useNavigate();
 
-                    {/* RIGHT */}
-                    <div className="col-lg-6 d-flex justify-content-center">
-                        <LoginCard className="w-100" style={{ maxWidth: "420px" }}>
+  const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik(
+    {
+      initialValues: loginValues,
+      validationSchema: loginSchema,
+      onSubmit: async (values) => {
+        // console.log(values);
+        // console.log(`${API}/api/auth/login`);
+        try {
+          
+          const res = await axios.patch(`${API}/api/auth/login`, values);
+          console.log(res);
+          navigate('/')
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  );
 
-                            <div className="text-center mb-4">
-                                <h4>ParkSy</h4>
-                            </div>
 
-                            <div className="d-flex gap-3 mb-3">
-                                <button className="social-btn w-50 d-flex justify-content-center align-items-center">
-                                    <ion-icon name="logo-google" className="me-2 fs-4"></ion-icon>
-                                </button>
-                                <button className="social-btn w-50">
-                                    <ion-icon name="logo-apple" className="me-2 fs-4"></ion-icon>
-                                </button>
-                            </div>
+  return (
+    <LoginWrapper>
+      <div className="container">
+        <div className="row align-items-center gy-5">
 
-                            <div className="text-center text-muted mb-3">
-                                or continue with email
-                            </div>
+          {/* LEFT */}
+          <div className="col-lg-6 d-flex justify-content-center">
+            <LeftContent>
+              <Badge>• Join thousands of users</Badge>
+              <h1 className="mt-4">
+                Welcome Back <br />
+                <span>to ParkSy</span>
+              </h1>
+              <p className="mt-3">
+                Sign in to access your account and manage your parking
+                spaces or bookings.
+              </p>
+            </LeftContent>
+          </div>
 
-                            <div className="mb-3">
-                                <label>Email Address</label>
-                                <input
-                                    type="email"
-                                    className="form-control"
-                                    placeholder="Email"
-                                />
-                            </div>
+          {/* RIGHT */}
+          <form className="col-lg-6 d-flex justify-content-center" onSubmit={handleSubmit}>
+            <LoginCard className="w-100" style={{ maxWidth: "420px" }}>
 
-                            <div className="mb-3 position-relative">
-                                <label>Password</label>
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    placeholder="Password"
-                                />
-                                <div
-                                    style={{
-                                        position: "absolute",
-                                        right: "15px",
-                                        top: "45px",
-                                        color: "#9ca3af",
-                                    }}
-                                />
-                            </div>
+              <div className="text-center mb-4">
+                <h4>ParkSy</h4>
+              </div>
 
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <div className="d-flex justify-content-center align-items-center">
-                                    <input type="checkbox" className="me-2" />
-                                    Remember me
-                                </div>
-                                <Link to="/forgot-password">Forgot password?</Link>
-                            </div>
+              <div className="d-flex gap-3 mb-3">
+                <button className="social-btn w-50 d-flex justify-content-center align-items-center">
+                  <ion-icon name="logo-google" className="me-2 fs-4"></ion-icon>
+                </button>
+                <button className="social-btn w-50">
+                  <ion-icon name="logo-apple" className="me-2 fs-4"></ion-icon>
+                </button>
+              </div>
 
-                            <PrimaryBtn className="w-100 mb-3">
-                                Sign In
-                            </PrimaryBtn>
+              <div className="text-center text-muted mb-3">
+                or continue with email
+              </div>
 
-                            <p className="text-center mb-0">
-                                Don’t have an account? <Link to="/signup">Sign Up</Link>
-                            </p>
+              <div className="mb-3">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Email"
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  value={values.email}
 
-                        </LoginCard>
-                    </div>
+                />
+              </div>
+              <p>{errors.email}</p>
 
+              <div className="mb-3 position-relative">
+                <label>Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  id="password"
+                  name="password"
+                  onChange={handleChange}
+                  value={values.password}
+
+                />
+                <p>{errors.password}</p>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "15px",
+                    top: "45px",
+                    color: "#9ca3af",
+                  }}
+                />
+              </div>
+
+              <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex justify-content-center align-items-center">
+                  <input type="checkbox" className="me-2" />
+                  Remember me
                 </div>
-            </div>
-        </LoginWrapper>
-    );
+                <Link to="/forgot-password">Forgot password?</Link>
+              </div>
+
+              <PrimaryBtn className="w-100 mb-3" type="submit">
+                Sign In
+              </PrimaryBtn>
+
+              <p className="text-center mb-0">
+                Don’t have an account? <Link to="/signup">Sign Up</Link>
+              </p>
+
+            </LoginCard>
+          </form>
+
+        </div>
+      </div>
+    </LoginWrapper>
+  );
 };
 
 export default Login;
