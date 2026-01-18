@@ -103,6 +103,7 @@ const signUpValues = {
   email: "",
   phone_number: "",
   password: "",
+  role: ""
 }
 
 const SignUp = () => {
@@ -218,6 +219,8 @@ const SignUp = () => {
                 />
               </div>
               <p>{errors.password}</p>
+
+              <input type="checkbox" name="role" id="role" value={values.role}/>
 
 
               <PrimaryBtn className="w-100 mb-3" type="submit">

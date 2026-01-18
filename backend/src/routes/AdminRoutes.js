@@ -11,4 +11,4 @@ router.put('/updateUser/:id', authMiddleware, roleMiddleware('admin'), updateUse
 router.get('/getSpaces', authMiddleware, roleMiddleware("admin"), getSpaces);
 router.put('/updatedSpace/:id', authMiddleware, roleMiddleware("admin"), updatedSpace);
 
-export default router;
+export default router; 

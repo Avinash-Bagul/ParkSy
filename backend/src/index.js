@@ -10,7 +10,8 @@ import SpacesRoutes from './routes/SpacesRoutes.js'
 import BookingRoutes from './routes/BookingRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
 
-dotenv.config({path: '../.env'});
+
+dotenv.config({ path: "../.env" });
 connectDB();
 
 const app = express();
@@ -20,7 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors({
-  origin: "http://localhost:3000",
+  origin: "http://localhost:5173",
   credentials: true
 }));
 

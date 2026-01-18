@@ -1,117 +1,94 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
 import SpacesModel from "../models/SpacesModel.js";
+import { createBookingS, paymentService } from "../services/BookingServices.js";
 
 export const createBooking = async (req, res) => {
+
     try {
-        if (req.user.role != "driver") {
-            return res.status(401).json({ message: "Only drivers can book " });
-        }
 
         const { booking_id, start_time, end_time } = req.body;
 
-        const parkingSpot = await SpacesModel.findById(booking_id);
-        // console.log(parkingSpot);
+        const booking = await createBookingS(booking_id, start_time, end_time);
 
-        //checks if parking spot is available or not exits
-        if (!parkingSpot || !parkingSpot.is_available) {
-            return res.status(404).json({ message: "Parking spot is not available" });
+        return res.status(201).json({ msg: 'Booking created', booking });
+    }
+    catch (error) {
+
+        if (error.message === "PARKINGSPOT_IS_NOT_AVAILABLE") {
+            return res.status(404).json({
+                msg: "Parking spot is not available"
+            });
         }
-
-        //checking the date is valid or not
-        const s = new Date(start_time), e = new Date(end_time);
-        if (isNaN(s.getTime()) || isNaN(e.getTime()) || e <= s) {
-            return res.status(400).json({ msg: "Invalid or bad time range" });
+        else if (error.message === "INVALID_OR_BAD_TIME_RANGE") {
+            return res.status(400).json({
+                msg: "Invalid or bad time range"
+            });
         }
-
-        //checking owner parking spot availability with driver booking dates & time
-        if (s < parkingSpot.available_from || e > parkingSpot.available_to) {
+        else if (error.message === "TIME_IS_OUTSIDE_OF_AVAILABLE_HOURS") {
             return res.status(400).json({
                 msg: "Booking time is outside the parking spot's available hours"
             });
         }
+        else if (error.message === "DURATION_MUST_BE_ATLEAST_ONE_HOUR") {
+            return res.status(400).json({
+                msg:
+                    "Minimum booking duration is 1 hour"
+            });
+        }
+        else if (error.message === "MAXIMUM_DURATION_IS_24_HOURS") {
+            return res.status(400).json({
+                msg:
+                    "Maximum booking duration is 24 hours"
+            });
+        }
+        else if (error.message === "ALREADY_BOOKED_FOR_SELECTER_TIME") {
+            return res.status(400).json({
+                msg:
+                    "This spot is already booked for the selected time"
+            });
 
-        const durationTime = (end_time - start_time) / 1000 * 60 * 60;
-        if (durationTime <= 1) {
-            return res.status(400).json({ msg: "Minimum booking duration is 1 hour" });
         }
 
-        if (durationTime > 24) {
-            return res.status(400).json({ msg: "Maximum booking duration is 24 hours" });
-        }
-
-        //if the parking spot is currently book by another driver it will show already booked
-        const conflict = await Booking.findOne({
-            booking_id,
-            status: "confirmed",
-            $or: [
-                { start_time: { $lt: new Date(end_time) }, end_time: { $gt: new Date(start_time) } }
-            ]
-        });
-
-        // console.log(conflict);
-
-        if (conflict) {
-            return res.status(400).json({ msg: "This spot is already booked for the selected time" });
-        }
-
-
-
-        const start = new Date(start_time);
-        const end = new Date(end_time);
-        const hours = (end - start) / (1000 * 60 * 60);
-
-        const total_price = hours * parkingSpot.price_per_hour;
-
-        const booking = new Booking({
-            driver_id: req.user.id,
-            booking_id,
-            start_time,
-            end_time,
-            total_price,
-            status: "confirmed"
-        })
-
-        await booking.save();
-
-        res.status(201).json({ msg: 'Booking created', booking });
-    } catch (error) {
-        res.status(403).json({ message: `server error ${error}` });
+        return res.status(403).json({ message: `server error ${error}` });
     }
 }
 
 
 export const getBookingDetails = async (req, res) => {
     try {
-        const id = req.params.id;
-        const bookingData = await Booking.findById(id);
 
-        res.status(201).json({ message: "successfully fetched booking detail ", bookingData })
+        const bookingData = await getBookings(req.params.id);
+
+        return res.status(201).json({ message: "successfully fetched booking detail ", bookingData })
 
     } catch (error) {
-        res.status(403).json({ message: `server error ${error.message}` })
+        if (error.message === "BOOKING_NOT_FOUND") {
+            return res.status(404).json({
+                msg: "Booking not found"
+            });
+        }
+        return res.status(403).json({ message: `server error ${error.message}` })
     }
 }
 
 export const payment = async (req, res) => {
     try {
-        const bookingData = await Booking.findById(req.params.id);
+        const paymentstatus = await paymentService(req.params.id);
 
-        if (!bookingData) {
-            return res.status(404).json({ msg: "booking not found" });
-        }
-
-        if (req.user.role !== "driver" || bookingData.driver_id.toString() !== req.user.id) {
-            return res.status(403).json({ msg: "Not authorised" });
-        }
-
-        bookingData.payment_status = "waiting_for_confirmation";
-        bookingData.save();
-        res.status(201).json({
-            message: "waiting for confirmation",
+        return res.status(201).json({
+            message: "waiting for confirmation", paymentstatus
         })
 
     } catch (error) {
+
+        if (error.message === "BOOKING_NOT_FOUND") {
+            return res.status(404).json({ msg: "booking not found" });
+        }
+        else if (error.message === "NOT_AUTHORIZED") {
+            return res.status(403).json({ msg: "Not authorised" });
+
+        }
         return res.status(500).json({ msg: `server error ${error.message}` });
     }
 }
