@@ -39,8 +39,9 @@ const BookingSchema = mongoose.Schema({
     },
 
     paid_by: {
-        type: String, enum: ["not paid","cash", "upi", "other"],
-        default: "not paid "
+        type: String,
+        enum: ["not_paid", "cash", "upi", "other"],
+        default: "not_paid"
     },
 
     confirmed_by_owner: {

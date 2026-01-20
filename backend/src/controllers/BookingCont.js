@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
 import SpacesModel from "../models/SpacesModel.js";
-import { createBookingS, paymentService } from "../services/BookingServices.js";
+import { createBookingS, getBookingS, paymentService } from "../services/BookingServices.js";
 
 export const createBooking = async (req, res) => {
 
@@ -9,13 +9,16 @@ export const createBooking = async (req, res) => {
 
         const { booking_id, start_time, end_time } = req.body;
 
-        const booking = await createBookingS(booking_id, start_time, end_time);
+        const booking = await createBookingS(booking_id, start_time, end_time, req.user);
 
         return res.status(201).json({ msg: 'Booking created', booking });
     }
     catch (error) {
 
-        if (error.message === "PARKINGSPOT_IS_NOT_AVAILABLE") {
+        if(error.message === "ONLY_DRIVERS_CAN_BOOK"){
+            return res.status(401).json({msg: "ONly drivers can book "});
+        }
+        else if (error.message === "PARKINGSPOT_IS_NOT_AVAILABLE") {
             return res.status(404).json({
                 msg: "Parking spot is not available"
             });
@@ -58,7 +61,7 @@ export const createBooking = async (req, res) => {
 export const getBookingDetails = async (req, res) => {
     try {
 
-        const bookingData = await getBookings(req.params.id);
+        const bookingData = await getBookingS(req.params.id);
 
         return res.status(201).json({ message: "successfully fetched booking detail ", bookingData })
 
@@ -74,7 +77,7 @@ export const getBookingDetails = async (req, res) => {
 
 export const payment = async (req, res) => {
     try {
-        const paymentstatus = await paymentService(req.params.id);
+        const paymentstatus = await paymentService(req.params.id , req.user);
 
         return res.status(201).json({
             message: "waiting for confirmation", paymentstatus

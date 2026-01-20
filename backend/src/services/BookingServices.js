@@ -2,11 +2,11 @@ import Booking from "../models/Booking.js";
 import Spaces from "../models/SpacesModel.js";
 
 
-export const createBookingS = async (booking_id, start_time, end_time) => {
+export const createBookingS = async (booking_id, start_time, end_time, user) => {
 
-    // if (req.user.role != "driver") {
-    //     return res.status(401).json({ message: "Only drivers can book " });
-    // }
+    if (user.role != "driver") {
+        throw new Error("ONLY_DRIVERS_CAN_BOOK");
+    }
 
     const parkingSpot = await Spaces.findById(booking_id);
     // console.log(parkingSpot);
@@ -28,8 +28,9 @@ export const createBookingS = async (booking_id, start_time, end_time) => {
         throw new Error("TIME_IS_OUTSIDE_OF_AVAILABLE_HOURS");
     }
 
-    const durationTime = (end_time - start_time) / 1000 * 60 * 60;
-    if (durationTime <= 1) {
+    const durationTime = (e - s) / (1000 * 60 * 60);
+    console.log(durationTime);
+    if (durationTime < 1) {
         throw new Error("DURATION_MUST_BE_ATLEAST_ONE_HOUR");
     }
 
@@ -61,7 +62,7 @@ export const createBookingS = async (booking_id, start_time, end_time) => {
     const total_price = hours * parkingSpot.price_per_hour;
 
     const booking = new Booking({
-        driver_id: req.user.id,
+        driver_id: user.id,
         booking_id,
         start_time,
         end_time,
@@ -86,7 +87,7 @@ export const getBookingS = async (id) => {
     return bookingData;
 }
 
-export const paymentService = async (id) => {
+export const paymentService = async (id, user) => {
 
     const bookingData = await Booking.findById(id);
 
@@ -94,7 +95,7 @@ export const paymentService = async (id) => {
         throw new Error("BOOKING_NOT_FOUND");
     }
 
-    if (req.user.role !== "driver" || bookingData.driver_id.toString() !== req.user.id) {
+    if (user.role !== "driver" || bookingData.driver_id.toString() !== user.id) {
         throw new Error("NOT_AUTHORIZED");
     }
 

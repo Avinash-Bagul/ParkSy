@@ -10,8 +10,8 @@ import SpacesRoutes from './routes/SpacesRoutes.js'
 import BookingRoutes from './routes/BookingRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
 
-
-dotenv.config({ path: "../.env" });
+// path: "../.env"
+dotenv.config({  });
 connectDB();
 
 const app = express();
