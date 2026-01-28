@@ -1,12 +1,10 @@
-import User from '../models/User.js';
-import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
 import signUpService from '../services/Auth/signUpService.js';
 import loginService from '../services/Auth/loginService.js';
 
 export const register = async (req, res) => {
 
     const { name, email, password, role, phone_number } = req.body;
+    console.log(req.body);
 
     // console.log(req.body);
     try {
@@ -51,7 +49,6 @@ export const login = async (req, res) => {
         //send response
         res.status(200).json({
             msg: 'Login successfull',
-            token: credentials.token,
             user: credentials.user
             // :
             // {

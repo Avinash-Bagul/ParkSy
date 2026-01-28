@@ -103,7 +103,7 @@ const signUpValues = {
   email: "",
   phone_number: "",
   password: "",
-  role: ""
+  role: "driver"
 }
 
 const SignUp = () => {
@@ -114,9 +114,8 @@ const SignUp = () => {
     validationSchema: signUpSchema,
     onSubmit: async (values) => {
       console.log(values);
-
       try {
-        const res = await axios.post(`${API}/api/auth/register`,values);
+        const res = await axios.post(`${API}/api/auth/register`, values,  { withCredentials: true });
         console.log(res);
         navigate('/')
       } catch (error) {
@@ -163,7 +162,7 @@ const SignUp = () => {
                   placeholder="Your Name"
                   id="name"
                   name="name"
-                  value={values.fname}
+                  value={values.name}
                   onChange={handleChange}
                 />
               </div>
@@ -204,6 +203,7 @@ const SignUp = () => {
                   type="password"
                   className="form-control"
                   placeholder="Password"
+                  autoComplete="off"
                   id="password"
                   name="password"
                   value={values.password}
@@ -219,11 +219,19 @@ const SignUp = () => {
                 />
               </div>
               <p>{errors.password}</p>
+              <div className="d-flex align-items-center">
+                <input type="checkbox" name="role" id="role" value={values.role} onChange={(e) =>
+                  handleChange({
+                    target: {
+                      name: "role",
+                      value: e.target.checked ? "owner" : "driver"
+                    }
+                  })} />
+                <label htmlFor="role" className="ms-2">Login as Owner</label>
+              </div>
 
-              <input type="checkbox" name="role" id="role" value={values.role}/>
 
-
-              <PrimaryBtn className="w-100 mb-3" type="submit">
+              <PrimaryBtn className="w-100 mb-3" type="submit" onClick={handleSubmit}>
                 Create Account
               </PrimaryBtn>
 

@@ -117,7 +117,7 @@ const Login = () => {
         // console.log(`${API}/api/auth/login`);
         try {
           
-          const res = await axios.patch(`${API}/api/auth/login`, values);
+          const res = await axios.put(`${API}/api/auth/login`, values,  { withCredentials: true });
           console.log(res);
           navigate('/')
         } catch (error) {

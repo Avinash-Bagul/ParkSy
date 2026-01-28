@@ -15,8 +15,8 @@ export const createBooking = async (req, res) => {
     }
     catch (error) {
 
-        if(error.message === "ONLY_DRIVERS_CAN_BOOK"){
-            return res.status(401).json({msg: "ONly drivers can book "});
+        if (error.message === "ONLY_DRIVERS_CAN_BOOK") {
+            return res.status(401).json({ msg: "ONly drivers can book " });
         }
         else if (error.message === "PARKINGSPOT_IS_NOT_AVAILABLE") {
             return res.status(404).json({
@@ -77,7 +77,29 @@ export const getBookingDetails = async (req, res) => {
 
 export const payment = async (req, res) => {
     try {
-        const paymentstatus = await paymentService(req.params.id , req.user);
+        const paymentstatus = await paymentService(req.params.id, req.user);
+
+        return res.status(201).json({
+            message: "waiting for confirmation", paymentstatus
+        })
+
+    } catch (error) {
+
+        if (error.message === "BOOKING_NOT_FOUND") {
+            return res.status(404).json({ msg: "booking not found" });
+        }
+        else if (error.message === "NOT_AUTHORIZED") {
+            return res.status(403).json({ msg: "Not authorised" });
+
+        }
+        return res.status(500).json({ msg: `server error ${error.message}` });
+    }
+}
+
+
+export const updateBooking = async () => {
+    try {
+        const paymentstatus = await updateBookingService(req.params.id, req.user);
 
         return res.status(201).json({
             message: "waiting for confirmation", paymentstatus

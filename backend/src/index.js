@@ -11,7 +11,7 @@ import BookingRoutes from './routes/BookingRoutes.js';
 import AdminRoutes from './routes/AdminRoutes.js';
 
 // path: "../.env"
-dotenv.config({  });
+dotenv.config({ path: "../.env" });
 connectDB();
 
 const app = express();

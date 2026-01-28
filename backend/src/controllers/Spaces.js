@@ -23,9 +23,9 @@ export const createSpace = async (req, res) => {
 export const getSpace = async (req, res) => {
     try {
         const spaces = await Spaces.find({ is_available: true }).populate("owner_id", "name email");
-        res.status(200).json({ msg: "Space fetched successfully", spaces });
+        return res.status(200).json({ msg: "Space fetched successfully", spaces });
     } catch (error) {
-        res.status(500).json({ msg: error.message });
+        return res.status(500).json({ msg: error.message });
     }
 }
 
@@ -35,8 +35,8 @@ export const updateSpace = async (req, res) => {
 
         const updated = await updateSpaceService(req.params.id, data);
 
+        // console.log(updated);
         return res.status(201).json({ msg: "Space updated successfully", updated });
-        console.log(updated);
     } catch (error) {
         if (error.message === "SPACE_NOT_FOUND") {
             return res.status(404).json({ message: "parking space not found" });
@@ -53,7 +53,7 @@ export const deleteSpace = async (req, res) => {
     try {
 
         const deleted = await deleteSpaceService(req.params.id)
-        res.status(201).json({ message: "Space deleted successfully" });
+        return res.status(201).json({ message: "Space deleted successfully" });
     } catch (error) {
 
         if (error.message === "PARKING_SPACE_NOT_FOUND") {
@@ -72,7 +72,7 @@ export const confirmPayment = async (req, res) => {
 
         const bookingData = await confirmPaymentService(id, paid_by);
 
-        res.status(201).json({
+        return res.status(201).json({
             msg: "payment confirmed by owner",
             bookingData
         })

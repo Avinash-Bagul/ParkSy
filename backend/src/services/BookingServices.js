@@ -1,8 +1,9 @@
+import { updateBooking } from "../controllers/BookingCont.js";
 import Booking from "../models/Booking.js";
 import Spaces from "../models/SpacesModel.js";
 
 
-export const createBookingS = async (booking_id, start_time, end_time, user) => {
+export const createBookingS = async (parking_spot_id, start_time, end_time, user) => {
 
     if (user.role != "driver") {
         throw new Error("ONLY_DRIVERS_CAN_BOOK");
@@ -40,7 +41,7 @@ export const createBookingS = async (booking_id, start_time, end_time, user) => 
 
     //if the parking spot is currently book by another driver it will show already booked
     const conflict = await Booking.findOne({
-        booking_id,
+        parking_spot_id,
         status: "confirmed",
         $or: [
             { start_time: { $lt: new Date(end_time) }, end_time: { $gt: new Date(start_time) } }
@@ -62,8 +63,8 @@ export const createBookingS = async (booking_id, start_time, end_time, user) => 
     const total_price = hours * parkingSpot.price_per_hour;
 
     const booking = new Booking({
-        driver_id: user.id,
-        booking_id,
+        user_id: user.id,
+        parking_spot_id,
         start_time,
         end_time,
         total_price,
@@ -100,8 +101,29 @@ export const paymentService = async (id, user) => {
     }
 
     bookingData.payment_status = "waiting_for_confirmation";
-    bookingData.save();
+    await bookingData.save();
 
     return bookingData;
 }
 
+
+export const updateBookingService = async (id , user, bodyData) => {
+    const bookingData = await Booking.findById(id);
+
+    if (!bookingData) {
+        throw new Error("BOOKING_NOT_FOUND");
+    }
+
+    if (user.role !== "driver" || bookingData.driver_id.toString() !== user.id) {
+        throw new Error("NOT_AUTHORIZED");
+    }
+
+    const updatedBooking = await Booking.findByIdAndUpdate(
+        id,
+        bodyData,
+        { new: true, runValidators: true }
+    );
+    await updatedBooking.save();
+
+    return updateBooking;
+}
