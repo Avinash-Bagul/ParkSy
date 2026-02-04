@@ -27,8 +27,85 @@ export const createSpaceService = async (req) => {
 }
 
 
-export const getSpaceService = async () => {
-    const spaces = await Spaces.find({ is_available: true }).populate("owner_id", "name email");
+export const getSpaceService = async (reqQuery) => {
+
+    const {
+        lat,
+        lng,
+        radius,
+        available,
+        minPrice,
+        maxPrice,
+        startDate,
+        endDate,
+        sort,
+        page = 1,
+        limit = 10
+    } = reqQuery;
+
+    const query = {}
+
+    // Location based search by radius langitute, latitude
+    if (lat && lng) {
+        query.location = {
+            $near: {
+                $geometry: {
+                    type: "Point",
+                    coordinates: [Number(lng), Number(lat)]
+                },
+                $maxDistance: Number(radius) || 5000 // default 5km
+            }
+        };
+    }
+
+
+    // price based search
+    if (minPrice || maxPrice) {
+        query["pricing.per_hour"] = {};
+
+        if (minPrice) {
+            query["pricing.per_hour"].$gte = Number(minPrice);
+        }
+
+        if (maxPrice) {
+            query["pricing.per_hour"].$lte = Number(maxPrice);
+        }
+    }
+
+
+    // Date avialability filter
+
+    if (startDate && endDate) {
+      query["availability.available_from"] = {
+        $lte: new Date(startDate)
+      };
+
+      query["availability.available_to"] = {
+        $gte: new Date(endDate)
+      };
+    }
+
+
+    // price based sorting
+     let sortOption = {};
+
+    if (sort === "price") {
+      sortOption = { "pricing.per_hour": 1 };
+    }
+
+    if (sort === "price-desc") {
+      sortOption = { "pricing.per_hour": -1 };
+    }
+
+    if (sort === "newest") {
+      sortOption = { createdAt: -1 };
+    }
+
+    const spaces = await Spaces.find(query).sort(sortOption);
+
+    if (!spaces) {
+        throw new Error("SPACE_NOT_FOUND");
+    }
 
     return spaces;
 }
@@ -45,7 +122,6 @@ export const updateSpaceService = async (id, data) => {
 
     if (String(req.user.id) !== String(SingleSpace.owner_id)) {
         throw new Error("UNAUTHORIZED_TO_UPDATE_THIS_SPACE");
-        return res.status(403).json({ message: "You are not authorized to update this space" });
     }
 
     const updated = await Spaces.findByIdAndUpdate(id, data, { new: true })

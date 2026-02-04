@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import heroimg from "../../../assets/heroimg.png";
+import { Link } from "react-router-dom";
 
 export const HeroWrapper = styled.section`
   min-height: 90vh;
@@ -26,11 +27,16 @@ export const HeroButtons = styled.div`
   gap: 1rem;
   margin-top: 1.5rem;
 
+  a{
+  text-decoration: none;
+  color: white;
+}
   @media (max-width: 576px) {
     flex-direction: column;
     width: 100%;
     align-items: center;
   }
+
 `;
 
 export const PrimaryBtn = styled.button`
@@ -77,7 +83,7 @@ const Hero = () => {
                 </p>
 
                 <HeroButtons className="d-flex justify-content-center align-items-center">
-                    <PrimaryBtn>Find Parking</PrimaryBtn>
+                    <PrimaryBtn><Link to={'/home'}>Find Parking</Link></PrimaryBtn>
                     <SecondaryBtn>List Your Space</SecondaryBtn>
                 </HeroButtons>
             </div>

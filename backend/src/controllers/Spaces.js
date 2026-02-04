@@ -1,6 +1,6 @@
 import Spaces from "../models/SpacesModel.js";
 import Booking from "../models/Booking.js";
-import { confirmPaymentService, deleteSpaceService, updateSpaceService } from "../services/SpaceServices.js";
+import { confirmPaymentService, createSpaceService, deleteSpaceService, getSpaceService, updateSpaceService } from "../services/SpaceServices.js";
 
 //creating parking spot
 export const createSpace = async (req, res) => {
@@ -22,8 +22,25 @@ export const createSpace = async (req, res) => {
 //getting parking spots
 export const getSpace = async (req, res) => {
     try {
-        const spaces = await Spaces.find({ is_available: true }).populate("owner_id", "name email");
+
+        // const spaces = await Spaces.find({ is_available: true }).populate("owner_id", "name email");
+        const spaces = await getSpaceService(req.query);
+
         return res.status(200).json({ msg: "Space fetched successfully", spaces });
+    } catch (error) {
+        if (error.message === "SPACE_NOT_FOUND") {
+            return res.status(404).json({ msg: "Space not found" });
+        }
+        return res.status(500).json({ msg: error.message });
+    }
+}
+
+// getting single space 
+export const getSingleSpace = async (req, res) => {
+    try {
+        console.log(req.params.id);
+        const space = await Spaces.findById(req.params.id);
+        return res.status(200).json({ msg: "Space fetched successfully", space });
     } catch (error) {
         return res.status(500).json({ msg: error.message });
     }
