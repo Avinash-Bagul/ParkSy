@@ -24,7 +24,7 @@ right: 0;
 const QuickLinks = () => {
     return (
         <>
-            <QuickLinksStyle className="bg-white ">
+            <QuickLinksStyle className="bg-white mt-5">
                 <div className="p-3">
 
                     <h5>Quick Links</h5>

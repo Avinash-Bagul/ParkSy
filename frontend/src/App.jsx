@@ -7,6 +7,9 @@ import Footer from "./components/Footer";
 import SignUp from "./pages/SignUp";  
 import Dashboard from "./pages/driverPage/Dashboard";
 import SingleSpace from "./components/driver/dashboard/SingleSpace";
+import Space from "./pages/driverPage/Space";
+import MyBookings  from "./pages/driverPage/MyBookings";
+import ErrorPage from "./pages/ErrorPage";
 
 function App() {
   return (
@@ -14,11 +17,13 @@ function App() {
       <Navbar />
 
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/home" element={<Dashboard/>} />
-        <Route path="/space/:id" element={<SingleSpace/>} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/signUp" element={<SignUp />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/home" element={<Dashboard/>} />
+        <Route exact path="/space/:id" element={<Space/>} />
+        <Route exact path="/myBookings" element={<MyBookings/>} />
+        <Route path="*" element={<ErrorPage/>} />
       </Routes>
       <Footer/>
     </>

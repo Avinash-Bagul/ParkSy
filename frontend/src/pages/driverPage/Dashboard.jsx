@@ -5,6 +5,7 @@ import axios from "axios";
 import QuickLinks from "../../components/driver/dashboard/QuickLinks";
 import styled from "styled-components";
 import ActiveBooking from "../../components/driver/dashboard/ActiveBooking";
+import Loading from "../../components/Loading";
 
 
 const API = import.meta.env.VITE_API;
@@ -36,13 +37,15 @@ const Dashboard = () => {
         fetchSpaces();
     }, []);
 
+    // console.log(list);
+   
     return (
         <>
             <DashboardStyle className="container-fluid p-0 bg-light">
 
                 <div className="container">
                     <div className="row py-5 gx-5 justify-content-between">
-                        <div className="col-8 bg-white">
+                        <div className="col-8">
                             <SearchBar />
                             {list.map((item, index) => {
                                 return <>
@@ -65,12 +68,14 @@ const Dashboard = () => {
                             <ActiveBooking />
                             <QuickLinks />
                         </div>
-                        
+
                     </div>
                 </div>
             </DashboardStyle>
         </>
     )
 }
+
+
 
 export default Dashboard;

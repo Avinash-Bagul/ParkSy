@@ -29,7 +29,7 @@ const List = (props) => {
     const navigate = useNavigate();
     return (
         <>
-            <Liststyle className="listBox w-100 d-flex justify-content-center align-items-center row bg-white py-2" onClick={(e) => {
+            <Liststyle className="listBox d-flex justify-content-center align-items-center row bg-white py-2 p-5" onClick={(e) => {
                 navigate(`/space/${props.id}`)
             }}>
                 <div className="carLogo col-3 d-flex justify-content-center">

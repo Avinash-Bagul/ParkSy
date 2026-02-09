@@ -43,7 +43,7 @@ const SearchBar = () => {
 
     return (
         <SearchWrapper className="mb-4">
-            <div className="row g-2 align-items-center">
+            <div className="row align-items-center">
                 <div className="col-12 col-md-9 fs-6">
                     <input
                         type="text"
