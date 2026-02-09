@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
 import SpacesModel from "../models/SpacesModel.js";
-import { createBookingS, getBookingS, paymentService } from "../services/BookingServices.js";
+import { createBookingS, getAllBservice, getBookingS, paymentService } from "../services/BookingServices.js";
 
 export const createBooking = async (req, res) => {
 
@@ -55,6 +55,22 @@ export const createBooking = async (req, res) => {
 
         return res.status(403).json({ message: `server error ${error}` });
     }
+}
+
+export const getAllBookings = async (req, res) => {
+    try {
+        console.log(req.user);
+        const bookings = await getAllBservice(req.user.id);
+
+       return res.status(200).json({msg: "get bookings successfull", bookings});
+    } catch (error) {
+        if(error.message === "BOOKINGS_NOT_FOUND"){
+            return res.status(404).json({msg: "Booking not found"});
+        }
+
+        return res.status(500).json({msg: "Server error", error: error.message});
+    }
+
 }
 
 

@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { updateBooking } from "../controllers/BookingCont.js";
 import Booking from "../models/Booking.js";
 import Spaces from "../models/SpacesModel.js";
@@ -9,7 +10,7 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, user
         throw new Error("ONLY_DRIVERS_CAN_BOOK");
     }
 
-    const parkingSpot = await Spaces.findById(booking_id);
+    const parkingSpot = await Spaces.findById(parking_spot_id);
     // console.log(parkingSpot);
 
     //checks if parking spot is available or not exits
@@ -76,7 +77,16 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, user
     return booking;
 }
 
+export const getAllBservice = async (id) => {
+    console.log(id);
+    const bookings = await Booking.find({driver_id: new mongoose.Types.ObjectId(id)});
 
+    if(!bookings){
+        throw new Error("BOOKINGS_NOT_FOUND");
+    }
+
+    return bookings;
+}
 
 export const getBookingS = async (id) => {
 

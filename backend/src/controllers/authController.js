@@ -1,5 +1,5 @@
 import signUpService from '../services/Auth/signUpService.js';
-import loginService from '../services/Auth/loginService.js';
+import loginService, { getSingleUserService } from '../services/Auth/loginService.js';
 
 export const register = async (req, res) => {
 
@@ -86,4 +86,20 @@ export const logout = (req, res) => {
     })
 
     return res.status(200).json({ msg: "Logged out successfully" });
+}
+
+
+export const getSingleUser = async (req, res) => {
+    try {
+        const singleUser = await getSingleUserService(req.params.id);
+
+        res.status(200).json({msg: "User found ", singleUser});
+    } catch (error) {
+        if(error.message === "USER_NOT_FOUND"){
+            return res.status(404).json({msg: "User not found"});
+
+        }
+
+        return res.status(500).json({msg: "Server Error", error: error.message});
+    }
 }

@@ -8,7 +8,7 @@ const loginService = async (email, password) => {
     // 1. Validate input
     if (!email || !password) {
         throw new Error("EMAIL_AND_PASSWORD_NOT_PROVIDED");
-        
+
     }
 
     //find user
@@ -20,7 +20,7 @@ const loginService = async (email, password) => {
 
     //compare password
     const ismatch = await bcrypt.compare(password, user.password_hash);
-    
+
     if (!ismatch) {
         throw new Error("INVALID_CREDIATIALS");
     }
@@ -39,9 +39,20 @@ const loginService = async (email, password) => {
     )
 
     return ({
-        token, 
+        token,
         user
     })
 }
 
 export default loginService;
+
+export const getSingleUserService = async (id) => {
+
+    const user = await User.findById(id);
+
+    if(!user){
+        throw new Error("USER_NOT_FOUND");
+    }
+
+    return user;
+}
