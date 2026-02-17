@@ -78,7 +78,7 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, user
 }
 
 export const getAllBservice = async (id) => {
-    console.log(id);
+    // console.log(id);
     const bookings = await Booking.find({driver_id: new mongoose.Types.ObjectId(id)});
 
     if(!bookings){

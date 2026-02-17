@@ -59,7 +59,7 @@ export const createBooking = async (req, res) => {
 
 export const getAllBookings = async (req, res) => {
     try {
-        console.log(req.user);
+        // console.log(req.user);
         const bookings = await getAllBservice(req.user.id);
 
        return res.status(200).json({msg: "get bookings successfull", bookings});

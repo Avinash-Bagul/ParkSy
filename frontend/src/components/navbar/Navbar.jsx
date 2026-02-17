@@ -22,7 +22,7 @@ const LogoBox = styled.div`
   a {
     font-size: 1.4rem;
     font-weight: 600;
-    color: ${(props) => props.theme.colors.navyBlue};;
+    color: ${(props) => props.theme.colors.orange};;
     text-decoration: none;
   }
 `;

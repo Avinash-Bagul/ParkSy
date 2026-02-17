@@ -4,6 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from 'formik';
 import loginSchema from "../features/auth/validation/LoginSchema";
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../store/features/authSlice.js";
+import { useEffect } from "react";
 
 const API = import.meta.env.VITE_API;
 
@@ -108,6 +111,10 @@ const Login = () => {
 
   const navigate = useNavigate();
 
+  //redux 
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+
   const { values, errors, handleBlur, handleChange, handleSubmit } = useFormik(
     {
       initialValues: loginValues,
@@ -119,6 +126,17 @@ const Login = () => {
           
           const res = await axios.put(`${API}/api/auth/login`, values,  { withCredentials: true });
           console.log(res);
+
+          localStorage.setItem("token", res.data.token);
+
+          dispatch(
+            loginSuccess({
+              user: res.data.user,
+              token: res.data.token
+            })
+          );
+
+
           navigate('/')
         } catch (error) {
           console.log(error);
@@ -126,6 +144,10 @@ const Login = () => {
       }
     }
   );
+
+  useEffect(() => {
+  console.log("Updated User:", user);
+}, [user]);
 
 
   return (

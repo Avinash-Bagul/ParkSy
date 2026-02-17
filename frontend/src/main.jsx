@@ -4,6 +4,8 @@ import App from './App.jsx'
 import './index.css'
 import { ThemeProvider } from "styled-components";
 import { theme } from './theme/theme.styles.jsx'
+import { Provider } from "react-redux";
+import {store} from '../src/store/app/store.js'
 
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -13,11 +15,13 @@ import { BrowserRouter } from 'react-router-dom'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 )
 
