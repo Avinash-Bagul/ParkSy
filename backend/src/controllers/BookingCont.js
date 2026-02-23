@@ -1,15 +1,16 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
 import SpacesModel from "../models/SpacesModel.js";
-import { createBookingS, getAllBservice, getBookingS, paymentService } from "../services/BookingServices.js";
+import { createBookingS, getAllBservice, getBookedSpacesService, getBookingS, paymentService } from "../services/BookingServices.js";
+import { getSingleSpace } from "./Spaces.js";
 
 export const createBooking = async (req, res) => {
 
     try {
 
-        const { booking_id, start_time, end_time } = req.body;
+        const { space_id, start_time, end_time } = req.body;
 
-        const booking = await createBookingS(booking_id, start_time, end_time, req.user);
+        const booking = await createBookingS(space_id, start_time, end_time, req.user);
 
         return res.status(201).json({ msg: 'Booking created', booking });
     }
@@ -61,8 +62,17 @@ export const getAllBookings = async (req, res) => {
     try {
         // console.log(req.user);
         const bookings = await getAllBservice(req.user.id);
+        // console.log(bookings);
+        let spaces = [];
 
-       return res.status(200).json({msg: "get bookings successfull", bookings});
+        // for(let s of bookings){
+        //    console.log(s.status);
+        //     const bookedSpaces = await getBookedSpacesService(s.booking_id); 
+        //     spaces.push(bookedSpaces);
+        // }
+
+        console.log(spaces);
+       return res.status(200).json({msg: "get bookings successfull", bookings, spaces});
     } catch (error) {
         if(error.message === "BOOKINGS_NOT_FOUND"){
             return res.status(404).json({msg: "Booking not found"});

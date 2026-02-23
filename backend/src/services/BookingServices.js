@@ -77,6 +77,15 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, user
     return booking;
 }
 
+export const getBookedSpacesService = async (booking_id) => {
+    console.log(booking_id);
+    const spaces = await Spaces.findById(booking_id);
+    if(!spaces){
+        throw new Error("SPACES_NOT_FOUND");
+    }
+    return spaces;
+}
+
 export const getAllBservice = async (id) => {
     // console.log(id);
     const bookings = await Booking.find({driver_id: new mongoose.Types.ObjectId(id)});
