@@ -37,7 +37,7 @@ const Feature = styled.div`
 `;
 
 const BookButton = styled.button`
-  background: #000;
+  background: ${(props) => props.theme.color.orange};
   color: #fff;
   border: none;
   padding: 14px;
@@ -49,6 +49,12 @@ const BookButton = styled.button`
     background: #222;
   }
 `;
+
+const bookingValues = {
+  start_time: "",
+  end_time: "",
+  space_id: ""
+}
 
 const Space = () => {
 
@@ -122,6 +128,7 @@ const Space = () => {
                             </div>
                             <div className="col-md-4 col-12">
                                 <BookingCard
+                                    spaceId={space._id}
                                     space={space}
                                 />
                             </div>

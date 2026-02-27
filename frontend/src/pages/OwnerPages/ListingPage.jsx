@@ -7,28 +7,58 @@ import Step5 from "../../components/OwnerComp/listingComp/steps/Steps5.jsx";
 
 import { useListingForm } from "../../hooks/useListingForm.jsx";
 
-export default function ListingPage() {
-    const {
-        currentStep,
-        completedSteps,
-        nextStep,
-        goToStep,
-    } = useListingForm();
+// export default function ListingPage() {
+//     const {
+//         currentStep,
+//         completedSteps,
+//         nextStep,
+//         goToStep,
+//     } = useListingForm();
 
-    return (
-        <div>
-            <Stepper
-                currentStep={currentStep}
-                completedSteps={completedSteps}
-                goToStep={goToStep}
-            />
+//     return (
+//         <div>
+//             <Stepper
+//                 currentStep={currentStep}
+//                 completedSteps={completedSteps}
+//                 goToStep={goToStep}
+//             />
 
-            {currentStep === 1 && <Step1 nextStep={nextStep} />}
-            {currentStep === 2 && <Step2 nextStep={nextStep} />}
-            {currentStep === 3 && <Step3 nextStep={nextStep} />}
-            {currentStep === 4 && <Step4 nextStep={nextStep} />}
-            {currentStep === 5 && <Step5 nextStep={nextStep} />}
-        </div>
-    );
-}
+//             {currentStep === 1 && <Step1 nextStep={nextStep} />}
+//             {currentStep === 2 && <Step2 nextStep={nextStep} />}
+//             {currentStep === 3 && <Step3 nextStep={nextStep} />}
+//             {currentStep === 4 && <Step4 nextStep={nextStep} />}
+//             {currentStep === 5 && <Step5 nextStep={nextStep} />}
+//         </div>
+//     );
+// }
 
+const ListingPage = () => {
+  const {
+    currentStep,
+    completedSteps,
+    nextStep,
+    prevStep,
+    goToStep,
+  } = useListingForm(6);
+
+  return (
+    <>
+    <div className="container">
+      <h2 className="mt-5">Listing Page</h2>
+    </div>
+      <Stepper
+        currentStep={currentStep}
+        completedSteps={completedSteps}
+        nextStep={nextStep}
+        prevStep={prevStep}
+        goToStep={goToStep}
+      />
+
+      <div>
+        Current Step Content: {currentStep}
+      </div>
+    </>
+  );
+};
+
+export default ListingPage;

@@ -13,6 +13,7 @@ import ErrorPage from "./pages/ErrorPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ListingPage from "./pages/OwnerPages/ListingPage";
 import OwnerDashboard from "./pages/OwnerPages/OwnerDashboard";
+import Profile from "./pages/Profile";
 
 function App() {
   return (
@@ -21,15 +22,21 @@ function App() {
 
       <Routes>
 
+        //Basic Routes
         <Route exact path="/" element={<Home />} />
         <Route exact path="/signUp" element={<SignUp />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Dashboard />} />
         <Route exact path="/space/:id" element={<Space />} />
+
+        //protected Routes
         <Route exact path="/myBookings" element={<ProtectedRoute><MyBookings /> </ProtectedRoute>} />
         <Route exact path="/list-Space" element={<ProtectedRoute><ListingPage /> </ProtectedRoute>} />
         <Route exact path="/ownerDashboard" element={<ProtectedRoute><OwnerDashboard /> </ProtectedRoute>} />
-
+       
+       //profile route
+       <Route exact path="/profile" element={<ProtectedRoute><Profile /> </ProtectedRoute>} />
+       
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

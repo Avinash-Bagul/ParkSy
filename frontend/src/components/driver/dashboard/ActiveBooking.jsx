@@ -57,7 +57,7 @@ const EndBtn = styled.button`
 
 const ActiveBooking = () => {
     return (
-        <Card>
+        <Card className="mb-5">
 
             {/* Header */}
             <CardHeader className="d-flex justify-content-between align-items-start">

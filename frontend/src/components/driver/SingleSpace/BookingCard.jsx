@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const Card = styled.div`
+const Card = styled.form`
   background: #fff;
   border-radius: 18px;
   overflow: hidden;
@@ -96,7 +96,7 @@ const Total = styled(Row)`
 `;
 
 const BookBtn = styled.button`
-  background: linear-gradient(135deg, #2563eb, #9333ea);
+  background: ${(props) => props.theme.colors.orange};
   color: #fff;
   border: none;
   width: 100%;
@@ -107,18 +107,44 @@ const BookBtn = styled.button`
   margin-top: 18px;
 `;
 
-const BookingCard = (props) => {
-    console.log(props.space);
-  const [duration, setDuration] = useState("hourly");
+const bookingValues = {
+  start_time: "",
+  end_time: "",
+  space_id: ""
+}
 
-  const baseRate = duration === "hourly" ? props.space.price_per_hour : props.space?.price_per_day;
+const BookingCard = (props) => {
+  console.log(props.space);
+  const [durationType, setDurationType] = useState("hourly");
+  const [availabletime, setavailableTime] = useState({
+    available_from: "",
+    available_to: ""
+  })
+
+  useEffect(() => {
+    if (props.space?.available_from && props.space?.available_to) {
+      const sd = new Date(props.space.available_from);
+      const ed = new Date(props.space.available_to);
+      // console.log(sd, ed);
+
+      setavailableTime({
+        available_from: sd.toLocaleString(),
+        available_to: ed.toLocaleString()
+      });
+    }
+
+  }, [props.space])
+
+  console.log(availabletime);
+
+  const baseRate = durationType === "hourly" ? props.space.price_per_hour : props.space?.price_per_day;
   const serviceFee = 2;
 
   return (
-    <Card>
+    <Card method="GET">
       {/* Header */}
       <Header>
-        {baseRate} Rs <span>per {duration === "hourly" ? "hour" : "day"}</span>
+        {baseRate} Rs <span>per {durationType === "hourly" ? "hour" : "day"}</span>
       </Header>
 
       <Body>
@@ -126,16 +152,20 @@ const BookingCard = (props) => {
         <SectionTitle>Select Duration</SectionTitle>
         <DurationGrid>
           <DurationBox
-            active={duration === "hourly"}
-            onClick={() => setDuration("hourly")}
+            active={durationType === "hourly"}
+            onClick={() => setDurationType("hourly")}
           >
             <h6>Hourly</h6>
             <span> {props.space.price_per_hour} Rs</span>
           </DurationBox>
 
           <DurationBox
-            active={duration === "daily"}
-            onClick={() => setDuration("daily")}
+            active={durationType === "daily"}
+            onClick={() => {
+              if (props.space?.price_per_day) {
+                setDurationType("daily")
+              }
+            }}
           >
             <h6>Daily</h6>
             <span>{props.space?.price_per_day ? props.space?.price_per_day : "Not Available"}</span>
@@ -143,16 +173,27 @@ const BookingCard = (props) => {
         </DurationGrid>
 
         {/* Date & Time */}
+        <SectionTitle>Available from</SectionTitle>
+        <div className="availableFrom my-1">
+          Date: {availabletime?.available_from.split(",")[0]} Time: {availabletime?.available_from.split(",")[1]}
+        </div>
+
+        <SectionTitle>Available To</SectionTitle>
+        <div className="availableFrom my-1">
+          Date: {availabletime?.available_to.split(",")[0]} Time: {availabletime?.available_to.split(",")[1]}
+        </div>
+
+
         <SectionTitle>Start Date & Time</SectionTitle>
         <DateTimeGrid className="bg-light">
-          <Input type="date" id="sdate" name="sdate" className="bg-light text-dark"/>
-          <Input type="time" id="stime" name="stime" className="bg-light text-dark"/>
+          <Input type="date" id="sdate" name="sdate" className="bg-light text-dark" />
+          <Input type="time" id="stime" name="stime" className="bg-light text-dark" />
         </DateTimeGrid>
 
         <SectionTitle>End Date & Time</SectionTitle>
         <DateTimeGrid>
-          <Input type="date" id="edate" name="edate" className="bg-light text-dark"/>
-          <Input type="time" id="edate" name="etime" className="bg-light text-dark"/>
+          <Input type="date" id="edate" name="edate" className="bg-light text-dark" />
+          <Input type="time" id="edate" name="etime" className="bg-light text-dark" />
         </DateTimeGrid>
 
         {/* Pricing */}

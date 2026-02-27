@@ -6,6 +6,7 @@ import QuickLinks from "../../components/driver/dashboard/QuickLinks";
 import styled from "styled-components";
 import ActiveBooking from "../../components/driver/dashboard/ActiveBooking";
 import Loading from "../../components/Loading";
+import { useSelector } from "react-redux";
 
 
 const API = import.meta.env.VITE_API;
@@ -22,11 +23,23 @@ const DashboardStyle = styled.header`
 
 const Dashboard = () => {
     const [list, setList] = useState([]);
+    const [activeBooking, setActiveBooking] = useState(false);
+    const isLogin = useSelector((state) => state.auth.isLogin);
 
     const fetchSpaces = async () => {
         try {
-            const res = await axios.get(`${API}/api/spaces`);
+            const res = await axios.get(`${API}/api/spaces`, { withCredentials: true });
             console.log(res);
+            if (isLogin) {
+
+                const activeBooking = await axios.get(`${API}/api/booking/getAllBookings`, { withCredentials: true });
+                console.log(activeBooking);
+                for (let i of activeBooking.data.bookings) {
+                    if (i.status === "confirmed") {
+                        setActiveBooking(true);
+                    }
+                }
+            }
             setList(res.data.spaces);
         } catch (error) {
             console.log(error.message);
@@ -38,7 +51,7 @@ const Dashboard = () => {
     }, []);
 
     // console.log(list);
-   
+
     return (
         <>
             <DashboardStyle className="container-fluid p-0 bg-light">
@@ -65,7 +78,8 @@ const Dashboard = () => {
 
                         </div>
                         <div className="col-4 d-flex flex-column justify-content-start">
-                            <ActiveBooking />
+                            {activeBooking ? <ActiveBooking /> : <></>}
+
                             <QuickLinks />
                         </div>
 

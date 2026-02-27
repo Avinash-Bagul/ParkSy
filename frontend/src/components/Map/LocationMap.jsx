@@ -93,7 +93,7 @@ const LocationMap = ({ lat, lng, address }) => {
 
         {/* Directions */}
         <DirectionsBtn
-          href={`https://www.openstreetmap.org/directions?to=${lat},${lng}`}
+          href={`http://google.com/maps/bylatlng?lat=${lat}&lng=${lng}`}
           target="_blank"
         >
           <ion-icon name="navigate-outline"></ion-icon> Get Directions

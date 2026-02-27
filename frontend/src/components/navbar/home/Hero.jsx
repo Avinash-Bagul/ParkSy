@@ -84,7 +84,7 @@ const Hero = () => {
 
                 <HeroButtons className="d-flex justify-content-center align-items-center">
                     <PrimaryBtn><Link to={'/home'}>Find Parking</Link></PrimaryBtn>
-                    <SecondaryBtn>List Your Space</SecondaryBtn>
+                    <SecondaryBtn><Link to={'/list-space'}>List Your Space </Link></SecondaryBtn>
                 </HeroButtons>
             </div>
         </HeroWrapper>

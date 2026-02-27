@@ -9,6 +9,7 @@ const Wrapper = styled.div`
 
 const Badge = styled.div`
     height: max-content;
+    background-color: ${(props) => props.theme.colors.orange};
 `
 
 const TitleRow = styled.div`
@@ -101,7 +102,7 @@ const SpaceInfo = (props) => {
                     </Address>
                 </div>
 
-                <Badge className="bg-primary text-white px-2" pill>
+                <Badge className="bg-orange text-white px-2" pill>
                     Covered Garage
                 </Badge>
             </TitleRow>

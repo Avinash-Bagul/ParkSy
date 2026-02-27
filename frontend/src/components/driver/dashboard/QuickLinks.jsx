@@ -24,12 +24,12 @@ right: 0;
 const QuickLinks = () => {
     return (
         <>
-            <QuickLinksStyle className="bg-white mt-5">
+            <QuickLinksStyle className="bg-white">
                 <div className="p-3">
 
                     <h5>Quick Links</h5>
                     <div className="links d-flex flex-column justify-content-evenly text-center align-items-center mt-3">
-                        <Link to="/bookings" className="w-100 link d-flex justify-content-between pt-2">
+                        <Link to="/myBookings" className="w-100 link d-flex justify-content-between pt-2">
                             <div className="d-flex align-items-start w-75">
                                 <ion-icon name="layers-outline" className="px-3 fs-3"></ion-icon>
                                 My Bookings

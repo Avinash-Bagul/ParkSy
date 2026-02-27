@@ -137,7 +137,7 @@ const Login = () => {
           );
 
 
-          navigate('/')
+          navigate('/home')
         } catch (error) {
           console.log(error);
         }

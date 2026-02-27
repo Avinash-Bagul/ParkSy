@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import favicon from "../../assets/favicon.ico";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../store/features/authSlice";
+import axios from "axios";
+const API = import.meta.env.VITE_API;
 
 const NavWrapper = styled.header`
   /* background: ${(props) => props.theme.colors.navyBlue}; */
@@ -70,6 +74,28 @@ const Hamburger = styled.div`
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  console.log(isLogin);
+
+  const loggingOut = async () => {
+
+    try {
+      const res = await axios.post(`${API}/api/auth/logout`);
+      console.log(res);
+
+      console.log("clickesd");
+      localStorage.removeItem("token");
+
+      dispatch(
+        logOut()
+      )
+
+    } catch (error) {
+        console.log("Error occured", error);
+    }
+
+  }
 
   return (
     <>
@@ -90,7 +116,38 @@ const Navbar = () => {
                 <li><Link to="/">Home</Link></li>
                 <li><Link to="#Hiw">How It Works</Link></li>
                 <li><Link to="/host">Become a Host</Link></li>
-                <li><Link to="/login">Login</Link></li>
+                {isLogin ?
+                  <li>
+                    {/* Profile Button */}
+                    <button
+                      className="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{ width: "40px", height: "40px" }}
+                    >
+                      <i className="bi bi-person fs-5"></i>
+                    </button>
+
+                    {/* Dropdown Menu */}
+                    <ul className="dropdown-menu dropdown-menu-end shadow">
+                      <li>
+                        <button className="dropdown-item text-danger">
+                          <Link to={"profile"}>
+                            Profile
+                          </Link>
+                        </button>
+                      </li>
+                      <li>
+                        <button className="dropdown-item text-danger" onClick={loggingOut}>
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </li>
+
+                  : <li><Link to="/login" onClick={() => setOpen(false)}>Login</Link></li>}
+
               </NavLinks>
             </div>
 
@@ -111,7 +168,31 @@ const Navbar = () => {
             <li><Link to="/" onClick={() => setOpen(false)}>Home</Link></li>
             <li><Link to="#Hiw" onClick={() => setOpen(false)}>How It Works</Link></li>
             <li><Link to="/host" onClick={() => setOpen(false)}>Become a Host</Link></li>
-            <li><Link to="/login" onClick={() => setOpen(false)}>Login</Link></li>
+            {isLogin ?
+              <li>
+                {/* Profile Button */}
+                <button
+                  className="btn btn-light rounded-circle d-flex align-items-center justify-content-center"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ width: "45px", height: "45px" }}
+                >
+                  <i className="bi bi-person fs-5"></i>
+                </button>
+
+                {/* Dropdown Menu */}
+                <ul className="dropdown-menu dropdown-menu-end shadow">
+                  <li>
+                    <button className="dropdown-item text-danger">
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </li>
+
+              : <li><Link to="/login" onClick={() => setOpen(false)}>Login</Link></li>}
+
           </ul>
         </MobileMenu>
       )}
