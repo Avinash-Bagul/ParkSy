@@ -14,6 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ListingPage from "./pages/OwnerPages/ListingPage";
 import OwnerDashboard from "./pages/OwnerPages/OwnerDashboard";
 import Profile from "./pages/Profile";
+import DirectionPage from "./pages/DirectionPage/Direction";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/home" element={<Dashboard />} />
         <Route exact path="/space/:id" element={<Space />} />
+
+        <Route exact path="/direction" element={<DirectionPage/>} />
 
         //protected Routes
         <Route exact path="/myBookings" element={<ProtectedRoute><MyBookings /> </ProtectedRoute>} />

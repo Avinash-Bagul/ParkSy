@@ -4,7 +4,8 @@ import Booking from "../models/Booking.js";
 import Spaces from "../models/SpacesModel.js";
 
 
-export const createBookingS = async (parking_spot_id, start_time, end_time, user) => {
+export const createBookingS = async (parking_spot_id, start_time, end_time, total_price , user) => {
+    console.log(user);
 
     if (user.role != "driver") {
         throw new Error("ONLY_DRIVERS_CAN_BOOK");
@@ -56,15 +57,17 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, user
     }
 
 
+    // const start = new Date(start_time);
+    // const end = new Date(end_time);
+    // const hours = (end - start) / (1000 * 60 * 60);
+    // console.log(hours);
 
-    const start = new Date(start_time);
-    const end = new Date(end_time);
-    const hours = (end - start) / (1000 * 60 * 60);
-
-    const total_price = hours * parkingSpot.price_per_hour;
+    // console.log(parkingSpot.price_per_hour);
+    // const total_price = hours * parkingSpot.price_per_hour;
+    console.log(total_price);
 
     const booking = new Booking({
-        user_id: user.id,
+        driver_id: user.id,
         parking_spot_id,
         start_time,
         end_time,
@@ -87,8 +90,9 @@ export const getBookedSpacesService = async (booking_id) => {
 }
 
 export const getAllBservice = async (id) => {
-    // console.log(id);
+    console.log(id);
     const bookings = await Booking.find({driver_id: new mongoose.Types.ObjectId(id)});
+    console.log(bookings);
 
     if(!bookings){
         throw new Error("BOOKINGS_NOT_FOUND");

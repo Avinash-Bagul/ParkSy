@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const BookingSchema = mongoose.Schema({
-    user_id: {
+    driver_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         required: true

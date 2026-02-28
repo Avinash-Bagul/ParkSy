@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import SpaceInfo from "../../components/driver/dashboard/SpaceInfo";
 import ImageCarousel from "../../components/driver/SingleSpace/ImageCarousel";
@@ -57,10 +57,12 @@ const bookingValues = {
 }
 
 const Space = () => {
-
     const { id } = useParams();
     const [space, setSpace] = useState([]);
     const [spaceUser, setSpaceUser] = useState();
+
+    const navigate = useNavigate();
+
     console.log(id);
 
     useEffect(() => {
@@ -100,10 +102,10 @@ const Space = () => {
             <>
                 <div className="container-fluid p-0 bg-light">
                     <div className="container pt-3 pb-5">
-                        <Link to="/home" className="backbtn align-items-center">
+                        <a className="backbtn align-items-center" onClick={() => navigate(-1)}>
                             <ion-icon name="arrow-back-outline"></ion-icon>
                             <div className="btn btn-">Back to Search</div>
-                        </Link>
+                        </a>
                         <div className="row gx-5 justify-content-between">
                             <div className="col-md-8 col-12 bg-white">
                                 <PageWrapper>

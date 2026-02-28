@@ -8,9 +8,9 @@ export const createBooking = async (req, res) => {
 
     try {
 
-        const { space_id, start_time, end_time } = req.body;
+        const { space_id, start_time, end_time , total_price} = req.body;
 
-        const booking = await createBookingS(space_id, start_time, end_time, req.user);
+        const booking = await createBookingS(space_id, start_time, end_time, total_price, req.user);
 
         return res.status(201).json({ msg: 'Booking created', booking });
     }

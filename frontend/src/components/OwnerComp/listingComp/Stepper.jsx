@@ -54,6 +54,11 @@ import Step5 from "./steps/Steps5";
 
 const Container = styled.div`
   border-radius: 12px;
+
+  .nextbtn{
+    background-color: ${(props) => props.theme.colors.teal};
+    color: white;
+  }
 `;
 
 const StepItem = styled.div`
@@ -185,7 +190,7 @@ export default function Stepper({
         </button>
 
         <button
-          className="btn btn-success"
+          className="btn nextbtn"
           onClick={nextStep}
           disabled={currentStep === steps.length - 1}
         >

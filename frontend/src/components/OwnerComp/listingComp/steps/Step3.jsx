@@ -61,6 +61,7 @@ const InputWrapper = styled.div`
 const PriceInput = styled.input`
   border: none;
   background: transparent;
+  color: black;
   width: 100%;
   outline: none;
   font-size: 16px;
