@@ -63,8 +63,6 @@ const Space = () => {
 
     const navigate = useNavigate();
 
-    console.log(id);
-
     useEffect(() => {
         const fetchData = async () => {
             try {

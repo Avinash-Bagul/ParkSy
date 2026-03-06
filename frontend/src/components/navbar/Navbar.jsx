@@ -76,15 +76,11 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.auth.isLogin);
-  console.log(isLogin);
 
   const loggingOut = async () => {
 
     try {
       const res = await axios.post(`${API}/api/auth/logout`);
-      console.log(res);
-
-      console.log("clickesd");
       localStorage.removeItem("token");
 
       dispatch(

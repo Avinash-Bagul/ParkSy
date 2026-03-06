@@ -20,13 +20,6 @@ const CarouselWrapper = styled.div`
 `;
 
 const ImageCarousel = (props) => {
-  const images = [
-    "https://thumbs.dreamstime.com/b/underground-parking-cars-white-colors-30872672.jpg",
-    "https://t4.ftcdn.net/jpg/03/30/78/77/360_F_330787755_RSUhTI7LvN3UUvGWus7t90Sh8yACJ8Lb.jpg",
-    "https://images.unsplash.com/photo-1593280405106-e438ebe93f5b?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cGFya2luZyUyMGxvdHxlbnwwfHwwfHx8MA%3D%3D  ",
-    "/images/parking4.jpg",
-  ];
-  console.log(props.images);
 
   return (
     <CarouselWrapper>

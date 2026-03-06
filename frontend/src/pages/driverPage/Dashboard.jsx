@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import List from "../../components/driver/dashboard/List";
-import SearchBar from "../../components/driver/dashboard/searchbar";
+import SearchBar from "../../components/driver/dashboard/SearchBar";
 import axios from "axios";
 import QuickLinks from "../../components/driver/dashboard/QuickLinks";
 import styled from "styled-components";
@@ -29,18 +29,11 @@ const Dashboard = () => {
     const fetchSpaces = async () => {
         try {
             const res = await axios.get(`${API}/api/spaces`, { withCredentials: true });
-            console.log(res);
-            if (isLogin) {
-
-                const activeBooking = await axios.get(`${API}/api/booking/getAllBookings`, { withCredentials: true });
-                console.log(activeBooking);
-                for (let i of activeBooking.data.bookings) {
-                    if (i.status === "confirmed") {
-                        setActiveBooking(true);
-                    }
-                }
-            }
             setList(res.data.spaces);
+            if (isLogin) {
+                const activeBooking = await axios.get(`${API}/api/booking/getActiveBooking`, { withCredentials: true });
+                setActiveBooking(activeBooking.data.activeB);
+            }
         } catch (error) {
             console.log(error.message);
         }
@@ -49,6 +42,7 @@ const Dashboard = () => {
     useEffect(() => {
         fetchSpaces();
     }, []);
+
 
     // console.log(list);
 
@@ -62,7 +56,7 @@ const Dashboard = () => {
                             <SearchBar />
                             {list.map((item, index) => {
                                 return <>
-                                    <List key={index}
+                                    <List key={item._id}
                                         id={item._id}
                                         image={item.photo_url[0]}
                                         title={item.title}
@@ -78,7 +72,7 @@ const Dashboard = () => {
 
                         </div>
                         <div className="col-4 d-flex flex-column justify-content-start">
-                            {activeBooking ? <ActiveBooking /> : <></>}
+                            {activeBooking && isLogin ? <ActiveBooking data={activeBooking} /> : <></>}
 
                             <QuickLinks />
                         </div>

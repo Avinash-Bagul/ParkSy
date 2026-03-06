@@ -84,7 +84,7 @@ const Description = styled.p`
 `;
 
 const SpaceInfo = (props) => {
-    console.log(props);
+  
     return (
         <Wrapper>
             {/* Title + Badge */}

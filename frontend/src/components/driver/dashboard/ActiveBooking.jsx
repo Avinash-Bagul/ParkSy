@@ -55,7 +55,13 @@ const EndBtn = styled.button`
   }
 `;
 
-const ActiveBooking = () => {
+const ActiveBooking = (props) => {
+
+    const startdate = new Date(props.data.activeBooking.start_time);
+    const enddate = new Date(props.data.activeBooking.end_time);
+    const startTime = startdate.toLocaleTimeString();
+    const endTime = enddate.toLocaleTimeString();
+    
     return (
         <Card className="mb-5">
 
@@ -75,8 +81,8 @@ const ActiveBooking = () => {
                 {/* Location */}
                 <div className="mb-4">
                     <small className="text-muted">Location</small>
-                    <h6 className="mb-1 mt-1">Downtown Garage</h6>
-                    <small className="text-muted">123 Main St</small>
+                    <h6 className="mb-1 mt-1">{props.data.space.title}</h6>
+                    <small className="text-muted">{props.data.space.location_address}</small>
                 </div>
 
                 {/* Spot + Duration */}
@@ -88,7 +94,7 @@ const ActiveBooking = () => {
 
                     <div className="col-6">
                         <small className="text-muted">Duration</small>
-                        <h5 className="mt-1">3 hours</h5>
+                        <h5 className="mt-1">{props.data.activeBooking.duration} hours</h5>
                     </div>
                 </div>
 
@@ -96,19 +102,19 @@ const ActiveBooking = () => {
                 <InfoBox className="mb-4">
                     <div className="d-flex justify-content-between mb-2">
                         <span className="text-muted">Start Time</span>
-                        <span>2:30 PM</span>
+                        <span>{startTime}</span>
                     </div>
 
                     <div className="d-flex justify-content-between mb-2">
                         <span className="text-muted">End Time</span>
-                        <span>5:30 PM</span>
+                        <span>{endTime}</span>
                     </div>
 
                     <hr />
 
                     <div className="d-flex justify-content-between">
                         <span className="text-muted">Total Cost</span>
-                        <CostText>$15</CostText>
+                        <CostText>{props.data.activeBooking.total_price} Rs</CostText>
                     </div>
                 </InfoBox>
 

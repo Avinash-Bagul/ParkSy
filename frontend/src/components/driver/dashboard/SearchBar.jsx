@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
 import useUserLocation from "../../../features/getLocation/UserLocation";
+import { useDispatch, useSelector } from "react-redux";
 
 export const SearchWrapper = styled.div`
   background: #fff;
@@ -31,15 +32,10 @@ export const FilterChip = styled.button`
 
 const SearchBar = () => {
     const [filter, setFilter] = useState();
-    const { location, error, loading, getLocation } = useUserLocation();
+    const {getLocation} = useUserLocation();
+    const dispatch = useDispatch();
 
-    useEffect(() => {
-        console.log(filter);
-        console.log(loading);
-        getLocation();
-        console.log(location);
-        console.log(error);
-    }, [location, filter])
+    
 
     return (
         <SearchWrapper className="mb-4">
@@ -62,7 +58,7 @@ const SearchBar = () => {
                     >
                         <option value="" className="px-4">Filter by</option>
                         <option value="price">Price (Low → High)</option>
-                        <option value="location" onClick={getLocation}>Nearest Location</option>
+                        <option value="location" >Nearest Location</option>
                         <option value="available">Available Now</option>
                     </select>
                 </div>

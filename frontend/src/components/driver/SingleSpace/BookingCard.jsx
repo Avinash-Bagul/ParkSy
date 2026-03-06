@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import SuccessPopup from "../../popups/SuccessPopup";
+import { useSelector } from "react-redux";
 
 const API = import.meta.env.VITE_API;
 
@@ -208,6 +209,8 @@ const BookingCard = ({ spaceId, space }) => {
   const [apiStatus, setApiStatus] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false); // ← add this
   const navigate = useNavigate();
+  const userLat = useSelector((state) => state.userLocation.userLat);
+  const userLng = useSelector((state) => state.userLocation.userLng); 
 
   const pricePerHour = space?.price_per_hour ?? 0;
 
@@ -251,6 +254,8 @@ const BookingCard = ({ spaceId, space }) => {
 
   const handleRedirect = useCallback(() => {
     setShowSuccess(false);
+
+    console.log("location coordinates " , userLat, userLng);
     navigate(
       `/directions?fromLat=${userLat}&fromLng=${userLng}&toLat=${space.latitude}&toLng=${space.longitude}}`
     );

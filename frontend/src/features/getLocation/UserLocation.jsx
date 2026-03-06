@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getUserLocation } from "../../store/features/locationSlice";
 
 const useUserLocation = () => {
 
@@ -7,8 +8,8 @@ const useUserLocation = () => {
   const [loading, setLoading] = useState(false);
 
   const getLocation = () => {
-
     console.log("location function clicked");
+
     if (!navigator.geolocation) {
       setError("Geolocation not supported");
       return;
@@ -19,9 +20,9 @@ const useUserLocation = () => {
     // console.log('asdfjk');
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
+        getUserLocation({
+          userLat: position.coords.latitude,
+          userLng: position.coords.longitude
         });
         setLoading(false);
         console.log("asdfjjhasdfj");

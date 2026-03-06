@@ -23,6 +23,11 @@ const BookingSchema = mongoose.Schema({
         required: true
     },
 
+    duration: {
+        type: Number,
+        required: true
+    },
+
     total_price: {
         type: Number,
         required: true

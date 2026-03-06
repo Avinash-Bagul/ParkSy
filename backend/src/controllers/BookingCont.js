@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import Booking from "../models/Booking.js";
 import SpacesModel from "../models/SpacesModel.js";
-import { createBookingS, getAllBservice, getBookedSpacesService, getBookingS, paymentService } from "../services/BookingServices.js";
+import { createBookingS, getActiveBService, getAllBservice, getBookedSpacesService, getBookingS, paymentService } from "../services/BookingServices.js";
 import { getSingleSpace } from "./Spaces.js";
 
 export const createBooking = async (req, res) => {
@@ -96,6 +96,22 @@ export const getBookingDetails = async (req, res) => {
             return res.status(404).json({
                 msg: "Booking not found"
             });
+        }
+        return res.status(403).json({ message: `server error ${error.message}` })
+    }
+}
+
+
+export const getActiveBooking = async (req, res) => {
+    try {
+        const activeB = await getActiveBService(req.user);
+
+        return res.status(201).json({ message: "successfully fetched active booking ", activeB })
+
+
+    } catch (error) {
+        if(error.message === "ACTIVE_BOOKING_NOT_FOUND"){
+            return res.status(403).json({ message: `Active booking not found ` })
         }
         return res.status(403).json({ message: `server error ${error.message}` })
     }

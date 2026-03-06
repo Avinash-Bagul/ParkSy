@@ -2,17 +2,16 @@ import mongoose from "mongoose";
 import { updateBooking } from "../controllers/BookingCont.js";
 import Booking from "../models/Booking.js";
 import Spaces from "../models/SpacesModel.js";
+import { act } from "react";
 
 
-export const createBookingS = async (parking_spot_id, start_time, end_time, total_price , user) => {
-    console.log(user);
+export const createBookingS = async (parking_spot_id, start_time, end_time, total_price, user) => {
 
     if (user.role != "driver") {
         throw new Error("ONLY_DRIVERS_CAN_BOOK");
     }
 
     const parkingSpot = await Spaces.findById(parking_spot_id);
-    // console.log(parkingSpot);
 
     //checks if parking spot is available or not exits
     if (!parkingSpot || !parkingSpot.is_available) {
@@ -32,14 +31,12 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, tota
     }
 
     const durationTime = (e - s) / (1000 * 60 * 60);
+
     console.log(durationTime);
     if (durationTime < 1) {
         throw new Error("DURATION_MUST_BE_ATLEAST_ONE_HOUR");
     }
 
-    if (durationTime > 24) {
-        throw new Error("MAXIMUM_DURATION_IS_24_HOURS");
-    }
 
     //if the parking spot is currently book by another driver it will show already booked
     const conflict = await Booking.findOne({
@@ -50,27 +47,18 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, tota
         ]
     });
 
-    // console.log(conflict);
 
     if (conflict) {
         throw new Error("ALREADY_BOOKED_FOR_SELECTER_TIME");
     }
 
 
-    // const start = new Date(start_time);
-    // const end = new Date(end_time);
-    // const hours = (end - start) / (1000 * 60 * 60);
-    // console.log(hours);
-
-    // console.log(parkingSpot.price_per_hour);
-    // const total_price = hours * parkingSpot.price_per_hour;
-    console.log(total_price);
-
     const booking = new Booking({
         driver_id: user.id,
         parking_spot_id,
         start_time,
         end_time,
+        duration: durationTime,
         total_price,
         status: "confirmed"
     })
@@ -83,18 +71,18 @@ export const createBookingS = async (parking_spot_id, start_time, end_time, tota
 export const getBookedSpacesService = async (booking_id) => {
     console.log(booking_id);
     const spaces = await Spaces.findById(booking_id);
-    if(!spaces){
+    if (!spaces) {
         throw new Error("SPACES_NOT_FOUND");
     }
     return spaces;
 }
 
 export const getAllBservice = async (id) => {
-    console.log(id);
-    const bookings = await Booking.find({driver_id: new mongoose.Types.ObjectId(id)});
-    console.log(bookings);
+    // console.log(id);
+    const bookings = await Booking.find({ driver_id: new mongoose.Types.ObjectId(id) });
+    // console.log(bookings);
 
-    if(!bookings){
+    if (!bookings) {
         throw new Error("BOOKINGS_NOT_FOUND");
     }
 
@@ -109,6 +97,24 @@ export const getBookingS = async (id) => {
     }
 
     return bookingData;
+}
+
+
+export const getActiveBService = async (user) => {
+    let space;
+    let activeBooking;
+    console.log(user);
+    if (user) {
+        activeBooking = await Booking.findOne({ driver_id: user.id, status: "active" });
+        if (activeBooking) {
+            space = await Spaces.findById(activeBooking.parking_spot_id);
+        }
+    }
+
+    if (!activeBooking) {
+        throw new Error("ACTIVE_BOOKING_NOT_FOUND");
+    }
+    return { activeBooking, space };
 }
 
 export const paymentService = async (id, user) => {
@@ -130,7 +136,7 @@ export const paymentService = async (id, user) => {
 }
 
 
-export const updateBookingService = async (id , user, bodyData) => {
+export const updateBookingService = async (id, user, bodyData) => {
     const bookingData = await Booking.findById(id);
 
     if (!bookingData) {
